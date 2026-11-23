@@ -42,7 +42,7 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
 .rotulo{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
 
 /* ---------- Tela do adulto ---------- */
-#s-adulto,#s-gravar{background:var(--sky2);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#s-adulto,#s-gravar,#s-config{background:var(--sky2);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .adulto-wrap{max-width:760px;margin:0 auto;padding:calc(24px + env(safe-area-inset-top)) 16px 40px}
 .adulto-top{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .adulto-top svg{width:84px;height:84px;flex:none}
@@ -60,11 +60,15 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
 .voz-num{font-size:18px;font-weight:700}
 .btn{padding:14px 22px;border-radius:16px;font-weight:800;font-size:18px;background:#EEF2F8}
 .btn.roxo{background:var(--roxo);color:#fff}
+.voz-copia{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.voz-copia .btn{font-size:16px;padding:12px 16px;cursor:pointer}
 .aviso{margin-top:10px;font-size:15px;font-weight:600;color:#B5443F}
 .nota{font-size:14px;color:var(--soft);font-weight:500;line-height:1.45;margin-top:16px}
 .segurar{position:relative;overflow:hidden;width:100%;padding:22px;border-radius:22px;background:var(--verde);color:#fff;font-size:24px;font-weight:900;margin-top:6px}
 .segurar .enche{position:absolute;inset:0;background:rgba(255,255,255,.35);transform-origin:left;transform:scaleX(0)}
 .segurar span{position:relative}
+.segurar.config{background:#EEF2F8;color:var(--ink);font-size:19px;padding:16px;margin-top:12px}
+.segurar.config .enche{background:rgba(156,124,244,.35)}
 .segurar small{display:block;font-size:14px;font-weight:600;opacity:.9}
 
 /* ---------- Gravar ---------- */
@@ -325,6 +329,26 @@ body.junto .titulo-cena{top:calc(14vmin + env(safe-area-inset-top))}
       </div>
     </div>
 
+    <div class="card resumo-voz">
+      <div class="rotulo">Sua voz</div>
+      <div class="voz-num" id="voz-resumo">0 de 44 falas gravadas</div>
+    </div>
+
+    <button class="segurar" id="bt-comecar"><div class="enche"></div><span>▶ Começar<small>Segure o botão por 2 segundos</small></span></button>
+
+    <p class="nota">Lembrete da pediatria (SBP, OMS): de 2 a 5 anos, no máximo 1 hora de tela por dia somando tudo (desenho incluído), de preferência com um adulto junto, apontando e falando as palavras. Depois do jogo, repita as palavras fora da tela: no rosto dele, nos bichos de pelúcia, nas frutas.</p>
+    <button class="segurar config" id="bt-config"><div class="enche"></div><span>⚙︎ Configurações<small>Gravar a voz e outras opções · segure 3 segundos</small></span></button>
+  </div>
+</section>
+
+<!-- ===================== CONFIGURAÇÕES ===================== -->
+<section id="s-config" class="screen">
+  <div class="adulto-wrap">
+    <div class="grav-top">
+      <button class="btn" id="bt-voltar-config">← Voltar</button>
+      <h1>Configurações</h1>
+    </div>
+    <p class="nota" style="margin:4px 0 14px">Esta tela só abre segurando o botão por 3 segundos, para a criança não gravar por cima nem apagar nada.</p>
     <div class="card">
       <div class="rotulo">Sua voz</div>
       <div class="voz-linha">
@@ -332,11 +356,14 @@ body.junto .titulo-cena{top:calc(14vmin + env(safe-area-inset-top))}
         <button class="btn roxo" id="bt-ir-gravar">Gravar minha voz</button>
       </div>
       <div class="aviso" id="voz-aviso"></div>
+      <div class="voz-copia">
+        <button class="btn" id="bt-exportar">Salvar minhas gravações</button>
+        <label class="btn" for="in-importar">Trazer gravações de outro aparelho</label>
+        <input type="file" id="in-importar" accept=".txt,.json,text/plain,application/json" hidden>
+      </div>
+      <p class="nota" style="margin-top:8px">Para levar sua voz do celular para o tablet: no celular, toque em "Salvar minhas gravações" e mande o arquivo para você mesma (WhatsApp ou Drive). No tablet, baixe o arquivo e toque em "Trazer gravações de outro aparelho". Também serve de cópia de segurança.</p>
     </div>
 
-    <button class="segurar" id="bt-comecar"><div class="enche"></div><span>▶ Começar<small>Segure o botão por 2 segundos</small></span></button>
-
-    <p class="nota">Lembrete da pediatria (SBP, OMS): de 2 a 5 anos, no máximo 1 hora de tela por dia somando tudo (desenho incluído), de preferência com um adulto junto, apontando e falando as palavras. Depois do jogo, repita as palavras fora da tela: no rosto dele, nos bichos de pelúcia, nas frutas.</p>
     <details class="nota" style="margin-top:12px"><summary style="font-weight:700;cursor:pointer">Créditos das fotos</summary>
       <p style="margin-top:8px">Fotos do Wikimedia Commons, usadas conforme a licença de cada uma:
       cachorro: MichaelMcPhee (CC BY 3.0) · gato: Marie-Lan Nguyen (CC BY 2.5) · vaca: Verum (CC BY-SA 3.0) · pato: Acarpentier (CC BY 3.0) · porco: Gzen92 (CC BY-SA 4.0) · ovelha: Alexander Klink (CC BY 4.0). As fotos foram recortadas e reduzidas.</p>
@@ -753,6 +780,7 @@ function ir(nome){
   $("#bt-eng").style.display = crianca ? "block" : "none";
   if(nome==="adulto") montarAdulto();
   if(nome==="gravar") montarGravar();
+  if(nome==="config") montarAdulto();
   if(nome==="menu") entrarMenu();
   if(nome==="cores") novaRodadaCor(true);
   if(nome==="bichos") $("#show-bicho").classList.remove("on");
@@ -794,10 +822,46 @@ function montarAdulto(){
   });
   const n=CLIPS.filter(c=>gravados.has(c.id)).length;
   $("#voz-num").textContent = `${n} de ${CLIPS.length} falas gravadas`;
+  $("#voz-resumo").textContent = n===CLIPS.length ? `${n} de ${CLIPS.length} falas gravadas. Tudo pronto!` : `${n} de ${CLIPS.length} falas gravadas. Para gravar, abra as Configurações.`;
   $("#voz-aviso").textContent = n<CLIPS.length ? `Faltam ${CLIPS.length-n}. As falas que não foram gravadas ficam mudas no jogo (só toca um barulhinho).` : "";
 }
 function aplicarModo(){ document.body.classList.toggle("junto", cfg.modo==="junto"); }
 $("#bt-ir-gravar").onclick=()=>ir("gravar");
+
+/* ================= Levar as gravações para outro aparelho ================= */
+function paraBase64(buf){ let s=""; const u=new Uint8Array(buf); for(let i=0;i<u.length;i+=0x8000) s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000)); return btoa(s); }
+function deBase64(t){ const s=atob(t), u=new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u; }
+async function montarArquivoVoz(){
+  const out={app:"nhac-voz",v:1,criadoEm:new Date().toISOString(),clips:{}};
+  for(const id of Object.keys(blobs)) out.clips[id]={t:blobs[id].type||"audio/mp4", d:paraBase64(await blobs[id].arrayBuffer())};
+  return new File([JSON.stringify(out)],"nhac-minha-voz.txt",{type:"text/plain"});
+}
+$("#bt-exportar").onclick=async()=>{
+  if(!Object.keys(blobs).length){ alert("Ainda não tem nenhuma fala gravada neste aparelho."); return; }
+  const arq=await montarArquivoVoz();
+  try{
+    if(navigator.canShare && navigator.canShare({files:[arq]})){ await navigator.share({files:[arq],title:"Minha voz do Nhac"}); return; }
+  }catch(e){ if(e && e.name==="AbortError") return; }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(arq); a.download=arq.name; document.body.appendChild(a); a.click(); a.remove();
+  alert("Pronto! O arquivo nhac-minha-voz.txt foi salvo na pasta Downloads deste aparelho.");
+};
+async function trazerArquivoVoz(f, perguntar=true){
+  let dados; try{ dados=JSON.parse(await f.text()); }catch(x){ dados=null; }
+  if(!dados || dados.app!=="nhac-voz" || !dados.clips){ alert("Esse arquivo não é das gravações do Nhac. Escolha o arquivo nhac-minha-voz.txt."); return 0; }
+  const ids=Object.keys(dados.clips).filter(id=>CLIPS.some(c=>c.id===id));
+  if(perguntar && !confirm(`Trazer ${ids.length} falas para este aparelho? Se alguma fala já estiver gravada aqui, ela será trocada pela do arquivo.`)) return 0;
+  audio(); let ok=0;
+  for(const id of ids){
+    const c=dados.clips[id], blob=new Blob([deBase64(c.d)],{type:c.t});
+    blobs[id]=blob; gravados.add(id); await salvarClip(id,blob);
+    try{ buffers[id]=await decodificar(blob); }catch(x){ delete buffers[id]; }
+    ok++;
+  }
+  montarAdulto();
+  if(perguntar) alert(`Pronto! ${ok} falas trazidas para este aparelho.`);
+  return ok;
+}
+$("#in-importar").onchange=async e=>{ const f=e.target.files && e.target.files[0]; e.target.value=""; if(f) await trazerArquivoVoz(f); };
 segurar($("#bt-comecar"), 2000, async ()=>{
   audio(); await prepararBuffers();
   sess={ total:cfg.min*60000, resta:cfg.min*60000 }; LS.set("sess",sess); LS.set("travado",false);
@@ -850,7 +914,9 @@ async function alternarGravacao(c,row){
   rec.start(); bGrav.classList.add("gravando"); bGrav.textContent="Parar";
   autoStop=setTimeout(()=>{ if(rec && rec.state==="recording") rec.stop(); },6000);
 }
-$("#bt-voltar-grav").onclick=()=>ir("adulto");
+$("#bt-voltar-grav").onclick=()=>ir("config");
+$("#bt-voltar-config").onclick=()=>ir("adulto");
+segurar($("#bt-config"), 3000, ()=>ir("config"));
 
 /* ================= Menu ================= */
 let jaDisseOi=false;
