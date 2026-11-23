@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nhac">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Nhac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky1:#BFEFFF; --sky2:#EFFBFF; --grass:#9BE07F; --grassD:#7CCB63;
+  --ink:#2B3A55; --soft:#5B6B88;
+  --roxo:#9C7CF4; --roxoD:#7A5AD6; --roxoP:#6E4FCB; --barriga:#DCD0FF;
+  --rosa:#FFB3C4; --rosaD:#FF8FA3; --amarelo:#FFD34E;
+  --vermelha:#F2545B; --azul:#2F6BFF; --amarela:#FFCE2E; --verde:#35B95A;
+  --mesa:#F6E7C8; --queijo:#FFD34E; --queijoD:#F0B429;
+  --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:"Nunito",ui-rounded,"SF Pro Rounded",system-ui,sans-serif;
+  color:var(--ink);background:var(--sky2);
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  touch-action:manipulation;overscroll-behavior:none;
+}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.screen{position:fixed;inset:0;display:none}
+.screen.active{display:block}
+.bg-ceu{background:radial-gradient(ellipse at 50% 108%,#EEF1F6 0 30%,#fff 62%)}
+.palavra{font-weight:900;letter-spacing:.02em;line-height:1;text-transform:uppercase;-webkit-text-stroke:.14em #141414;paint-order:stroke fill;text-shadow:0 .09em 0 rgba(0,0,0,.18)}
+.rotulo{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+
+/* ---------- Tela do adulto ---------- */
+#s-adulto,#s-gravar{background:var(--sky2);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.adulto-wrap{max-width:760px;margin:0 auto;padding:calc(24px + env(safe-area-inset-top)) 16px 40px}
+.adulto-top{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.adulto-top svg{width:84px;height:84px;flex:none}
+.adulto-top h1{font-size:34px;font-weight:900;line-height:1.05}
+.adulto-top p{color:var(--soft);font-weight:500;margin-top:4px}
+.card{background:var(--card);border-radius:22px;padding:18px 18px 20px;margin-bottom:14px;box-shadow:0 4px 0 rgba(43,58,85,.07)}
+.card h2{font-size:20px;font-weight:800;margin:6px 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:14px 20px;border-radius:16px;background:#EEF2F8;font-weight:800;font-size:18px;min-width:84px}
+.chip.on{background:var(--roxo);color:#fff}
+.chip small{display:block;font-weight:500;font-size:13px;opacity:.85;margin-top:2px}
+.voz-linha{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.voz-num{font-size:18px;font-weight:700}
+.btn{padding:14px 22px;border-radius:16px;font-weight:800;font-size:18px;background:#EEF2F8}
+.btn.roxo{background:var(--roxo);color:#fff}
+.aviso{margin-top:10px;font-size:15px;font-weight:600;color:#B5443F}
+.nota{font-size:14px;color:var(--soft);font-weight:500;line-height:1.45;margin-top:16px}
+.segurar{position:relative;overflow:hidden;width:100%;padding:22px;border-radius:22px;background:var(--verde);color:#fff;font-size:24px;font-weight:900;margin-top:6px}
+.segurar .enche{position:absolute;inset:0;background:rgba(255,255,255,.35);transform-origin:left;transform:scaleX(0)}
+.segurar span{position:relative}
+.segurar small{display:block;font-size:14px;font-weight:600;opacity:.9}
+
+/* ---------- Gravar ---------- */
+.grav-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.grav-top h1{font-size:28px;font-weight:900}
+.grupo-t{margin:22px 0 10px}
+.linha{display:flex;align-items:center;gap:10px;background:#fff;border-radius:18px;padding:12px 14px;margin-bottom:10px}
+.linha .fala{flex:1;font-size:20px;font-weight:800}
+.linha .fala small{display:block;font-size:13px;font-weight:600;color:var(--soft)}
+.linha .ok{font-size:24px;font-weight:900;width:30px;text-align:center;color:var(--verde)}
+.bt-grav{width:64px;height:64px;border-radius:50%;background:var(--vermelha);color:#fff;font-size:15px;font-weight:900}
+.bt-grav.gravando{background:#2B3A55;animation:pulsa 1s infinite}
+.bt-ouvir{width:56px;height:56px;border-radius:50%;background:#EEF2F8;font-size:22px}
+.bt-ouvir:disabled{opacity:.3}
+
+/* ---------- Comum das telas da criança ---------- */
+.bt-casa .ico{display:block;width:62%;height:62%;margin:auto}
+.bt-casa{display:flex;align-items:center;justify-content:center;position:absolute;top:calc(14px + env(safe-area-inset-top));left:calc(14px + env(safe-area-inset-left));width:min(13vmin,96px);height:min(13vmin,96px);border-radius:50%;background:#fff;font-size:min(7vmin,50px);box-shadow:0 5px 0 rgba(43,58,85,.12);z-index:20}
+.bt-eng{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.55);font-size:22px;color:var(--soft);z-index:20;overflow:hidden}
+.bt-eng .enche{position:absolute;inset:0;background:rgba(156,124,244,.5);transform:scaleY(0);transform-origin:bottom}
+.bt-eng span{position:relative}
+.dica{position:absolute;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);max-width:min(64vw,620px);background:rgba(255,255,255,.92);border-radius:16px;padding:10px 16px;font-size:clamp(13px,1.9vmin,17px);font-weight:600;line-height:1.35;text-align:center;z-index:15;display:none}
+.dica b{font-weight:900;color:var(--roxoD)}
+body.junto .dica{display:block}
+.palco{position:absolute;inset:0;bottom:var(--barra)}
+:root{--barra:min(14vmin,112px)}
+
+/* ---------- Monstrinho ---------- */
+.monstro{overflow:visible}
+.monstro .m-o,.monstro .m-dorme{display:none}
+.monstro.aberta .m-o{display:inline}
+.monstro.aberta .m-c{display:none}
+.monstro.dorme .m-dorme{display:inline}
+.monstro.dorme .m-olhos{display:none}
+.monstro .vp{transform-box:fill-box;transform-origin:center}
+.monstro .vp.brilha{animation:brilha .9s ease 2}
+.monstro .vp.mexe{animation:mexe .5s ease 2}
+.monstro .hit{fill:transparent}
+.monstro .pisca{transform-box:fill-box;transform-origin:center;animation:pisca 5s infinite}
+.pula{animation:pula .6s ease}
+.balanca{animation:balanca .5s ease}
+.respira{animation:respira 3s ease-in-out infinite;transform-origin:50% 100%}
+
+/* ---------- Imagens 3D ---------- */
+.nhac-img{position:relative}
+.nhac-img img{width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+.nhac-img .n-come,.nhac-img .n-dorme{display:none}
+.nhac-img.aberta .n-normal{display:none}.nhac-img.aberta .n-come{display:block}
+.nhac-img.dorme .n-normal{display:none}.nhac-img.dorme .n-dorme{display:block}
+.hit-boca{position:absolute;left:50%;top:58%;width:20%;height:12%;transform:translate(-50%,-50%)}
+.menino-img{position:relative;height:100%;display:inline-block}
+.menino-img img{height:100%;width:auto;display:block;pointer-events:none;-webkit-user-drag:none}
+.menino-img .hit{position:absolute;transform:translate(-50%,-50%);border-radius:50%;z-index:3}
+.menino-img .vp{position:absolute;inset:0;pointer-events:none;animation:none!important}
+.menino-img .anel-p{position:absolute;transform:translate(-50%,-50%) scale(.6);border-radius:50%;border:5px solid #FFD84A;box-shadow:0 0 18px #FFD84A;opacity:0}
+.menino-img .vp.brilha .anel-p{animation:anelOk .9s ease 2}
+.menino-img .vp.mexe .anel-p{animation:anelDica .55s ease 2;border-color:#fff;box-shadow:0 0 14px #9C7CF4}
+@keyframes anelOk{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}}
+@keyframes anelDica{0%,100%{opacity:0}50%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+img{-webkit-user-drag:none;user-select:none}
+.img-bloco{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+
+/* ---------- Menu ---------- */
+.menu{position:absolute;inset:0;bottom:var(--barra);display:flex;align-items:center;justify-content:center;gap:4vmin;padding:0 4vmin;flex-wrap:wrap}
+.menu .oi{width:min(28vmin,240px)}
+.portas{display:flex;gap:3vmin;flex-wrap:wrap;justify-content:center}
+.porta{width:min(24vmin,210px);height:min(24vmin,210px);border-radius:32px;background:#fff;box-shadow:0 8px 0 rgba(43,58,85,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1vmin}
+.porta .ic{font-size:min(12vmin,100px);line-height:1}
+.porta .ic .menino-img{height:min(13vmin,108px)}
+.porta #ic-cores svg{width:100%;height:100%}
+.porta .ic svg{width:min(14vmin,116px);height:min(13vmin,108px)}
+.porta .ic-des{width:min(15vmin,124px);height:min(12vmin,100px)}
+.porta .foto-ic{width:min(13vmin,110px);height:min(13vmin,110px);border-radius:50%;object-fit:cover;border:4px solid #F2F2F2;display:block}
+.porta .nm{font-size:min(3.2vmin,26px);font-weight:900}
+.porta:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(43,58,85,.12)}
+
+/* ---------- Cores ---------- */
+.cores{position:absolute;inset:0;bottom:var(--barra);display:flex;align-items:center;justify-content:space-around;padding:20vmin 3vmin 2vmin}
+.cores .lado-m{position:relative;width:min(40vmin,380px)}
+.balao{position:absolute;top:-6vmin;right:-10vmin;background:#fff;border-radius:24px;padding:1.6vmin 2.4vmin;display:flex;align-items:center;gap:1.4vmin;font-size:min(4vmin,34px);font-weight:900;box-shadow:0 5px 0 rgba(43,58,85,.1);z-index:3}
+.balao .pingo{width:min(9vmin,76px);height:min(9vmin,76px)}
+.palavra-cor{position:absolute;left:0;right:0;top:calc(9vmin + env(safe-area-inset-top));text-align:center;font-size:min(11vmin,100px);z-index:4;pointer-events:none}
+body.junto .palavra-cor{top:calc(13vmin + env(safe-area-inset-top))}
+.bolas{display:flex;flex-wrap:wrap;gap:4vmin;justify-content:center;align-items:center;max-width:min(56vmin,520px)}
+.bola{width:min(21vmin,190px);height:min(21vmin,190px);border-radius:50%;position:relative;transition:transform .6s cubic-bezier(.5,-0.2,.6,1),opacity .6s}
+.bola svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1.2vmin 1vmin rgba(0,0,0,.22))}
+.bola.mexe{animation:mexe .5s ease 3}
+
+/* ---------- Bichos ---------- */
+.bichos{position:absolute;inset:0;bottom:var(--barra);display:grid;grid-template-columns:repeat(3,1fr);gap:3vmin;padding:calc(10vmin + env(safe-area-inset-top)) 6vmin 3vmin;align-content:center;justify-items:center}
+.bicho{width:min(25vmin,220px);height:min(25vmin,220px);border-radius:50%;overflow:hidden;border:6px solid #fff;box-shadow:0 7px 0 rgba(43,58,85,.14),0 0 0 2px #E6E9F0}
+.bicho img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.bicho:active{transform:translateY(4px)}
+.show{position:absolute;inset:0;background:rgba(255,255,255,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:30}
+.show.on{display:flex}
+.show .grande{width:min(78vmin,620px);height:min(52vmin,420px);object-fit:cover;border-radius:32px;border:8px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.18);animation:pula .7s ease 2}
+.show .som{font-size:min(11vmin,96px);margin-top:2vmin}
+.show .nome{font-size:min(4vmin,32px);font-weight:800;color:var(--soft)}
+
+/* ---------- Corpo ---------- */
+.corpo{position:absolute;inset:0;bottom:var(--barra);display:flex;align-items:center;justify-content:center;gap:4vmin;padding:9vmin 3vmin 2vmin}
+.corpo .grande-m{height:min(74vmin,100%)}
+.pergunta{text-align:center;min-width:min(30vmin,280px)}
+.pergunta .q{font-size:min(7.5vmin,66px);color:#FF4F9A;display:block}
+.pergunta .em{display:block;font-size:min(13vmin,110px);line-height:1.1}
+
+/* ---------- Barra do ratinho ---------- */
+.barra{position:fixed;left:0;right:0;bottom:0;height:calc(var(--barra) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--mesa);border-top:4px solid #EBD5A8;display:none;z-index:25}
+.barra.on{display:block}
+.trilho{position:absolute;left:4vmin;right:calc(4vmin + var(--barra) * 1.3);top:22%;bottom:18%}
+.queijo{position:absolute;left:0;top:0;bottom:0;border-radius:14px 4px 4px 14px;background-color:var(--queijo);
+  background-image:radial-gradient(circle at 18% 35%,var(--queijoD) 0 7px,transparent 8px),radial-gradient(circle at 58% 68%,var(--queijoD) 0 9px,transparent 10px),radial-gradient(circle at 85% 28%,var(--queijoD) 0 5px,transparent 6px);
+  background-size:90px 100%;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08);transition:width .4s linear}
+.queijo::after{content:"";position:absolute;right:-7px;top:0;bottom:0;width:14px;background:radial-gradient(circle at 100% 50%,var(--mesa) 0 7px,transparent 8px);background-size:14px 16px}
+.rato{position:absolute;top:50%;width:calc(var(--barra) * 1.15);transform:translate(-6px,-62%);transition:left .4s linear}
+.rato .cab{transform-origin:30% 70%;animation:mastiga .45s ease-in-out infinite}
+.rato.parado .cab{animation:none}
+.migalha{position:absolute;width:8px;height:8px;border-radius:2px;background:var(--queijo);animation:cai .9s ease-in forwards}
+
+/* ---------- Fim ---------- */
+#s-fim{background:linear-gradient(180deg,#1E2A5A,#3A3F8F 70%,#4E4AA8)}
+.fim{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;color:#fff}
+.fim .cena-fim{display:flex;align-items:flex-end;gap:2vmin}
+.fim .cena-fim .monstro{width:min(40vmin,360px)}
+.fim .cena-fim .rato-fim{width:min(22vmin,190px)}
+.fim h1{font-size:min(9vmin,80px);font-weight:900}
+.lua{position:absolute;top:8vmin;right:12vmin;width:14vmin;height:14vmin;border-radius:50%;box-shadow:-3vmin 1vmin 0 0 #FFE9A8}
+.estrela{position:absolute;color:#FFE9A8;animation:brilho 2.4s ease-in-out infinite}
+.zz{position:absolute;font-weight:900;font-size:min(6vmin,50px);color:#E6E0FF;animation:zz 3s ease-in-out infinite}
+.destravar{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom));right:calc(18px + env(safe-area-inset-right));padding:12px 18px;border-radius:14px;background:rgba(255,255,255,.14);color:#fff;font-weight:700;font-size:15px;overflow:hidden}
+.destravar .enche{position:absolute;inset:0;background:rgba(255,255,255,.3);transform:scaleX(0);transform-origin:left}
+.destravar span{position:relative}
+
+/* ---------- Confete ---------- */
+.conf{position:fixed;pointer-events:none;width:min(6vmin,48px);height:min(6vmin,48px);margin:-3vmin 0 0 -3vmin;z-index:50;animation:voa 1s ease-out forwards}
+
+/* ---------- Bíblia: comum ---------- */
+.cena{position:absolute;inset:0;bottom:var(--barra);overflow:hidden}
+.chao{position:absolute;left:0;right:0;bottom:0;height:20%;background:linear-gradient(#B8EB93,#86D16A)}
+.titulo-cena{position:absolute;left:0;right:0;top:calc(10vmin + env(safe-area-inset-top));text-align:center;font-size:min(8vmin,72px);z-index:6;pointer-events:none}
+body.junto .titulo-cena{top:calc(14vmin + env(safe-area-inset-top))}
+.denovo{position:absolute;right:4vmin;top:calc(12vmin + env(safe-area-inset-top));width:min(14vmin,110px);height:min(14vmin,110px);border-radius:50%;background:var(--verde);color:#fff;font-size:min(8vmin,64px);font-weight:900;box-shadow:0 6px 0 rgba(0,0,0,.15);display:none;z-index:12}
+.denovo.on{display:block;animation:pula .7s ease}
+.maozinha{position:absolute;pointer-events:none;z-index:7}
+.anel{width:min(16vmin,130px);height:min(16vmin,130px);margin:-8vmin 0 0 -8vmin;border-radius:50%;border:6px solid #FFE27A;animation:anel 1.4s ease-out infinite}
+@keyframes anel{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.4);opacity:0}}
+@keyframes toca{50%{transform:translateY(-14px) scale(1.08)}}
+@keyframes surge{0%{transform:scale(0) rotate(-20deg);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes flutua{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3%) rotate(2deg)}}
+@keyframes gota{to{transform:translateY(110vh)}}
+@keyframes nadaX{0%,100%{transform:translateX(-30vw) scaleX(1)}49%{transform:translateX(30vw) scaleX(1)}50%{transform:translateX(30vw) scaleX(-1)}99%{transform:translateX(-30vw) scaleX(-1)}}
+@keyframes voaX{from{transform:translateX(-20vw)}to{transform:translateX(120vw)}}
+@keyframes onda{50%{transform:translateX(-4%)}}
+
+/* Arca */
+.bg-mar{background:linear-gradient(180deg,#D9F3FF 0%,#fff 70%)}
+.arca{position:absolute;right:6vw;bottom:12%;width:min(56vmin,540px);z-index:3}
+.arca.flutua{animation:flutua 2s ease-in-out infinite}
+.arca{aspect-ratio:600/367}
+.arca .portinha{position:absolute;left:46.5%;top:23%;width:19.5%;height:35%;border-radius:45% 45% 6px 6px/30% 30% 6px 6px;background:linear-gradient(90deg,#B8692E,#D98A45 50%,#B8692E);box-shadow:inset 0 0 0 4px #8B4A1E;opacity:0;transition:opacity .4s}
+.arca.fechada .portinha{opacity:1}
+.agua{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(#6FC8FF,#2A8BE0);transition:height 2s ease;z-index:2}
+.agua.sobe{height:34%}
+.par{position:absolute;left:6vw;bottom:15%;display:flex;gap:1vmin;z-index:4;transition:transform .9s cubic-bezier(.4,-0.3,.6,1),opacity .9s;animation:surge .5s ease}
+.par span{display:block;width:min(19vmin,165px);height:min(19vmin,165px)}
+.chuva{position:absolute;inset:0;pointer-events:none;z-index:5;display:none}
+.chuva.on{display:block}
+.chuva i{position:absolute;top:-10%;width:5px;height:22px;border-radius:3px;background:#5AB4F5;opacity:.8;animation:gota .9s linear infinite}
+.arco{position:absolute;left:50%;top:6%;width:min(110vmin,900px);transform:translateX(-50%) scale(0);transform-origin:50% 100%;transition:transform 1.2s cubic-bezier(.3,1.4,.5,1);z-index:1}
+.arco.on{transform:translateX(-50%) scale(1)}
+
+/* Ovelhinha */
+.esconde{position:absolute;left:0;right:0;bottom:12%;display:flex;justify-content:space-around;align-items:flex-end;z-index:3}
+.lugar{position:relative;width:min(28vmin,250px);height:min(30vmin,270px)}
+.lugar .ov{position:absolute;left:50%;bottom:6%;width:min(20vmin,170px);height:min(20vmin,170px);transform:translateX(-50%) scale(.2);opacity:0;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .3s}
+.lugar.achou .ov{transform:translateX(-50%) translateY(-55%) scale(1);opacity:1}
+.lugar .obj{position:absolute;inset:0;transition:transform .5s ease}
+.lugar.achou .obj{transform:translateX(55%) rotate(12deg)}
+.lugar.mexe .obj{animation:mexe .45s ease 2}
+.rebanho{position:absolute;right:3vmin;bottom:2vmin;z-index:4;display:flex;gap:.6vmin}
+.mini-ov{display:block;width:min(8vmin,64px);height:min(8vmin,64px)}
+
+/* Criação */
+#s-criacao{background:#10122A;transition:background 1.6s ease}
+#s-criacao.luz{background:linear-gradient(180deg,#9FE0FF 0%,#E9F9FF 70%)}
+.item{position:absolute;line-height:1;animation:surge .7s ease both;pointer-events:none}
+.mar-cria{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(#7DD3FF,#2F8FE0);animation:surge .7s ease both;transform-origin:50% 100%}
+.peixe{position:absolute;width:min(13vmin,110px);height:min(9vmin,77px);animation:nadaX 7s linear infinite}
+.passaro{position:absolute;width:min(11vmin,96px);height:min(9vmin,77px);animation:voaX 6s linear infinite}
+
+/* Jonas */
+.bg-ceu-mar{background:linear-gradient(180deg,#CFF1FF 0%,#fff 45%)}
+.mar{position:absolute;left:-10%;right:-10%;bottom:0;height:58%;background:linear-gradient(#5CC2FF,#1E78D2);border-radius:40% 40% 0 0/6vmin 6vmin 0 0;animation:onda 4s ease-in-out infinite}
+.praia{position:absolute;right:0;bottom:0;width:26%;height:30%;background:#F5D9A0;border-radius:60% 0 0 0;z-index:2}
+.peixao{position:absolute;left:30%;top:30%;width:min(52vmin,500px);z-index:3;transform-origin:50% 50%}
+.peixao.nada{animation:balancaPeixe 1.2s ease-in-out infinite}
+@keyframes balancaPeixe{0%,100%{transform:translate(0,0) rotate(-3deg)}50%{transform:translate(-6vw,2vmin) rotate(3deg)}}
+.peixao .po{display:none}
+.peixao img{pointer-events:none;width:100%;display:block}
+.peixao .po{display:none}
+.peixao.aberta .po{display:block}
+.peixao.aberta .pc{display:none}
+.peixao.aberta .po{display:inline}
+.peixao.aberta .pc{display:none}
+.jonas{position:absolute;left:5%;top:22%;width:min(24vmin,200px);z-index:4;transition:transform 1s cubic-bezier(.4,-0.3,.6,1.3),opacity .6s}
+.jonas .jonas-p{width:70%;height:min(15vmin,126px);margin:0 auto -4%}
+.jonas .barco{width:130%;margin-left:-15%;height:min(7vmin,60px)}
+
+@keyframes pulsa{50%{transform:scale(1.08)}}
+@keyframes brilha{0%,100%{transform:scale(1)}40%{transform:scale(1.28)}}
+@keyframes mexe{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes pisca{0%,46%,50%,100%{transform:scaleY(1)}48%{transform:scaleY(.1)}}
+@keyframes pula{0%,100%{transform:translateY(0)}35%{transform:translateY(-8%) scale(1.04)}65%{transform:translateY(0) scale(.97,1.03)}}
+@keyframes balanca{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes respira{0%,100%{transform:scale(1)}50%{transform:scale(1.02,.98)}}
+@keyframes mastiga{0%,100%{transform:rotate(0)}50%{transform:rotate(-5deg) translateY(-2%)}}
+@keyframes cai{to{transform:translate(-14px,40px) rotate(160deg);opacity:0}}
+@keyframes voa{to{transform:translate(var(--dx),var(--dy)) scale(.6);opacity:0}}
+@keyframes brilho{50%{opacity:.3}}
+@keyframes zz{0%{transform:translate(0,0);opacity:0}30%{opacity:1}100%{transform:translate(4vmin,-10vmin);opacity:0}}
+
+@media (orientation:portrait){
+  .cores{flex-direction:column;padding-top:14vmin}
+  .balao{right:-4vmin;top:-8vmin}
+  .corpo{flex-direction:column-reverse;padding-top:14vmin}
+  .corpo .grande-m{height:52vh}
+  .bichos{grid-template-columns:repeat(2,1fr);padding-top:16vmin}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<!-- ===================== TELA DO ADULTO ===================== -->
+<section id="s-adulto" class="screen">
+  <div class="adulto-wrap">
+    <div class="adulto-top">
+      <div id="mini-m"></div>
+      <div>
+        <div class="rotulo">Para o adulto</div>
+        <h1>Joguinhos do Nhac</h1>
+        <p>Ajuste aqui antes de entregar o tablet.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="rotulo">Cronômetro do ratinho</div>
+      <h2>Quanto tempo o queijinho dura hoje?</h2>
+      <div class="chips" id="chips-tempo"></div>
+    </div>
+
+    <div class="card">
+      <div class="rotulo">Quem vai jogar</div>
+      <h2>Vocês vão jogar juntos?</h2>
+      <div class="chips" id="chips-modo">
+        <button class="chip" data-modo="junto">Junto com um adulto<small>Aparece uma dica do que falar</small></button>
+        <button class="chip" data-modo="sozinho">Ele sozinho<small>Sem dicas na tela</small></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="rotulo">Sua voz</div>
+      <div class="voz-linha">
+        <div class="voz-num" id="voz-num">0 de 26 falas gravadas</div>
+        <button class="btn roxo" id="bt-ir-gravar">Gravar minha voz</button>
+      </div>
+      <div class="aviso" id="voz-aviso"></div>
+    </div>
+
+    <button class="segurar" id="bt-comecar"><div class="enche"></div><span>▶ Começar<small>Segure o botão por 2 segundos</small></span></button>
+
+    <p class="nota">Lembrete da pediatria (SBP, OMS): de 2 a 5 anos, no máximo 1 hora de tela por dia somando tudo (desenho incluído), de preferência com um adulto junto, apontando e falando as palavras. Depois do jogo, repita as palavras fora da tela: no rosto dele, nos bichos de pelúcia, nas frutas.</p>
+    <details class="nota" style="margin-top:12px"><summary style="font-weight:700;cursor:pointer">Créditos das fotos</summary>
+      <p style="margin-top:8px">Fotos do Wikimedia Commons, usadas conforme a licença de cada uma:
+      cachorro: MichaelMcPhee (CC BY 3.0) · gato: Marie-Lan Nguyen (CC BY 2.5) · vaca: Verum (CC BY-SA 3.0) · pato: Acarpentier (CC BY 3.0) · porco: Gzen92 (CC BY-SA 4.0) · ovelha: Alexander Klink (CC BY 4.0). As fotos foram recortadas e reduzidas.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== GRAVAR ===================== -->
+<section id="s-gravar" class="screen">
+  <div class="adulto-wrap">
+    <div class="grav-top">
+      <button class="btn" id="bt-voltar-grav">← Voltar</button>
+      <h1>Gravar minha voz</h1>
+    </div>
+    <p class="nota" style="margin-top:4px">Toque no botão vermelho, fale a frase com voz animada e toque de novo para parar (para sozinho em 6 segundos). Depois toque em ▶ para ouvir. Se não gostar, é só gravar de novo por cima. A gravação fica guardada só neste tablet.</p>
+    <div id="lista-grav"></div>
+  </div>
+</section>
+
+<!-- ===================== MENU ===================== -->
+<section id="s-menu" class="screen bg-ceu">
+  <div class="dica" id="dica-menu">Escolha junto com ele. Pergunte: <b>"Vamos dar comida pro Nhac?"</b></div>
+  <div class="menu">
+    <div class="oi" id="menu-m"></div>
+    <div class="portas">
+      <button class="porta" data-ir="cores"><div class="ic" id="ic-cores" style="display:flex;gap:1vmin"></div><div class="nm">Cores</div></button>
+      <button class="porta" data-ir="bichos"><div class="ic"><img class="foto-ic" src="fotos/cachorro.jpg" alt=""></div><div class="nm">Bichos</div></button>
+      <button class="porta" data-ir="corpo"><div class="ic" id="ic-corpo"></div><div class="nm">Corpo</div></button>
+      <button class="porta" data-ir="biblia"><div class="ic ic-des" data-des="livro"></div><div class="nm">Bíblia</div></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CORES ===================== -->
+<section id="s-cores" class="screen bg-ceu">
+  <button class="bt-casa" data-casa><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-cores"></div>
+  <div class="palavra-cor palavra" id="txt-cor"></div>
+  <div class="cores">
+    <div class="lado-m">
+      <div class="balao" id="balao-cor"><div class="pingo" id="pingo-cor"></div></div>
+      <div id="cores-m"></div>
+    </div>
+    <div class="bolas" id="bolas"></div>
+  </div>
+</section>
+
+<!-- ===================== BICHOS ===================== -->
+<section id="s-bichos" class="screen bg-ceu">
+  <button class="bt-casa" data-casa><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-bichos">Toque num bicho e <b>imite o som junto</b>. Depois pare e espere ele tentar, mesmo que saia só um pedacinho.</div>
+  <div class="bichos" id="grade-bichos"></div>
+  <div class="show" id="show-bicho"><img class="grande" id="show-em" alt=""><div class="som palavra" id="show-som"></div><div class="nome" id="show-nome"></div></div>
+</section>
+
+<!-- ===================== CORPO ===================== -->
+<section id="s-corpo" class="screen bg-ceu">
+  <button class="bt-casa" data-casa><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-corpo"></div>
+  <div class="corpo">
+    <div id="corpo-m" style="height:100%;display:flex;align-items:center"></div>
+    <div class="pergunta" id="pergunta"></div>
+  </div>
+</section>
+
+<!-- ===================== BÍBLIA: MENU ===================== -->
+<section id="s-biblia" class="screen bg-ceu">
+  <button class="bt-casa" data-casa><span class="ico" data-des="casa"></span></button>
+  <div class="dica">Escolha uma história. Depois do jogo, conte a mesma história para ele na hora de dormir.</div>
+  <div class="menu"><div class="portas">
+    <button class="porta" data-ir="arca"><div class="ic ic-des" data-des="arcoiris"></div><div class="nm">Arca de Noé</div></button>
+    <button class="porta" data-ir="ovelha"><div class="ic ic-des" data-des="ovelhaCorpo"></div><div class="nm">Ovelhinha</div></button>
+    <button class="porta" data-ir="criacao"><div class="ic ic-des" data-des="sol"></div><div class="nm">Deus criou</div></button>
+    <button class="porta" data-ir="jonas"><div class="ic ic-des" data-des="peixao"></div><div class="nm">Jonas</div></button>
+  </div></div>
+</section>
+
+<!-- ===================== ARCA DE NOÉ ===================== -->
+<section id="s-arca" class="screen bg-mar">
+  <button class="bt-casa" data-casa="biblia"><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-arca"></div>
+  <div class="cena" id="cena-arca">
+    <div class="arco" id="arco"><img src="img/arcoiris.webp" alt="" style="width:100%;display:block"></div>
+    <div class="chao"></div>
+    <div class="agua" id="agua-arca"></div>
+    <div class="arca" id="arca"><img class="img-bloco" src="img/arca.webp" alt="Arca de Noé"><span class="portinha" id="porta-arca"></span></div>
+    <div class="par" id="par"></div>
+    <div class="chuva" id="chuva"></div>
+    <button class="denovo" id="denovo-arca">↻</button>
+  </div>
+</section>
+
+<!-- ===================== OVELHINHA ===================== -->
+<section id="s-ovelha" class="screen bg-ceu">
+  <button class="bt-casa" data-casa="biblia"><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-ovelha">Pergunte: <b>"CADÊ A OVELHINHA?"</b> Deixe ele procurar sozinho. Quando achar, faça junto: <b>"MÉÉÉ!"</b></div>
+  <div class="titulo-cena palavra" style="color:#FF4F9A">Cadê a ovelhinha?</div>
+  <div class="cena">
+    <div class="chao"></div>
+    <div class="esconde" id="esconderijos"></div>
+    <div class="rebanho" id="rebanho"></div>
+  </div>
+</section>
+
+<!-- ===================== DEUS CRIOU ===================== -->
+<section id="s-criacao" class="screen">
+  <button class="bt-casa" data-casa="biblia"><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-cria"></div>
+  <div class="titulo-cena palavra" id="titulo-cria" style="color:#F5D000"></div>
+  <div class="cena" id="cena-cria"></div>
+  <button class="denovo" id="denovo-cria">↻</button>
+</section>
+
+<!-- ===================== JONAS ===================== -->
+<section id="s-jonas" class="screen bg-ceu-mar">
+  <button class="bt-casa" data-casa="biblia"><span class="ico" data-des="casa"></span></button>
+  <div class="dica" id="dica-jonas"></div>
+  <div class="titulo-cena palavra" id="titulo-jonas" style="color:#2A8BE0"></div>
+  <div class="cena" id="cena-jonas">
+    <div class="mar"></div>
+    <div class="praia"></div>
+    <div class="peixao" id="peixao"><img class="pc" src="img/peixao.webp" alt="Peixão"><img class="po" src="img/peixao-aberto.webp" alt=""><span id="boca-peixe" style="position:absolute;left:20%;top:68%;width:10%;height:10%"></span></div>
+    <div class="jonas" id="jonas"><img id="jonas-img" src="img/jonas-barco.webp" alt="Jonas" style="width:100%;display:block;pointer-events:none"></div>
+    <button class="denovo" id="denovo-jonas">↻</button>
+  </div>
+</section>
+
+<!-- ===================== FIM ===================== -->
+<section id="s-fim" class="screen">
+  <div class="lua"></div>
+  <div class="fim">
+    <div class="cena-fim">
+      <div id="fim-m" style="position:relative"></div>
+      <div class="rato-fim" id="fim-rato"></div>
+    </div>
+    <h1>Tchau, tchau!</h1>
+  </div>
+  <button class="destravar" id="bt-destravar"><div class="enche"></div><span>Adulto: segure 3 segundos</span></button>
+</section>
+
+<!-- ===================== BARRA DO RATINHO ===================== -->
+<div class="barra" id="barra">
+  <div class="trilho" id="trilho">
+    <div class="queijo" id="queijo"></div>
+    <div class="rato" id="rato"></div>
+  </div>
+</div>
+<button class="bt-eng" id="bt-eng" style="display:none"><div class="enche"></div><span>⚙︎</span></button>
+
+<script>
+"use strict";
+/* ================= Dados ================= */
+const CORES = [
+  {id:"vermelha", nome:"Vermelha", hex:"#E8131B", cl:"#FF8F8F", cd:"#8E0006"},
+  {id:"azul",     nome:"Azul",     hex:"#2A1FE0", cl:"#8C88FF", cd:"#120A7A"},
+  {id:"amarela",  nome:"Amarela",  hex:"#F5D000", cl:"#FFF7A8", cd:"#A88600"},
+  {id:"verde",    nome:"Verde",    hex:"#4FD80F", cl:"#C2FF8C", cd:"#1F7A00"}
+];
+const BICHOS = [
+  {id:"cachorro", cor:"#FF8A00", pos:"50% 40%", nome:"Cachorro", som:"Au au!",     fala:"O cachorro faz au au!",  bg:"#FFE3C2"},
+  {id:"gato", cor:"#F5D000",     pos:"28% 40%", nome:"Gato",     som:"Miau!",      fala:"O gato faz miau!",       bg:"#FFF0B3"},
+  {id:"vaca", cor:"#2A9DF4",     pos:"42% 50%", nome:"Vaca",     som:"Muuu!",      fala:"A vaca faz muuu!",       bg:"#E3F4FF"},
+  {id:"pato", cor:"#4FD80F",     pos:"60% 45%", nome:"Pato",     som:"Quá quá!",   fala:"O pato faz quá quá!",    bg:"#D9F7D9"},
+  {id:"porco", cor:"#FF4F9A",    pos:"55% 50%", nome:"Porco",    som:"Óinc óinc!", fala:"O porco faz óinc óinc!", bg:"#FFDDE6"},
+  {id:"ovelha", cor:"#9C5CFF",   pos:"58% 45%", nome:"Ovelha",   som:"Méééé!",     fala:"A ovelha faz méééé!",    bg:"#EDE7FF"}
+];
+const PARTES = [
+  {id:"olho",   em:"👀", nome:"olho",   art:"o"},
+  {id:"nariz",  em:"👃", nome:"nariz",  art:"o"},
+  {id:"boca",   em:"👄", nome:"boca",   art:"a"},
+  {id:"orelha", em:"👂", nome:"orelha", art:"a"},
+  {id:"mao",    em:"✋", nome:"mão",    art:"a"},
+  {id:"pe",     em:"🦶", nome:"pé",     art:"o"}
+];
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+const CLIPS = [
+  {id:"oi",    g:"Geral", fala:"Oi! Vamos brincar?", quando:"Quando abre o menu"},
+  {id:"eba",   g:"Geral", fala:"Eba! Muito bem!", quando:"Quando ele acerta"},
+  {id:"nhac",  g:"Geral", fala:"Nhac, nhac, nhac!", quando:"Quando o monstrinho come"},
+  {id:"tchau", g:"Geral", fala:"Acabou o queijinho! Tchau, tchau!", quando:"Quando o tempo acaba"},
+  ...CORES.map(c=>({id:"cor_"+c.id, g:"Cores", fala:c.nome+"!", quando:"Pedido e acerto da cor"})),
+  ...BICHOS.map(b=>({id:"bicho_"+b.id, g:"Bichos", fala:b.fala, quando:"Quando toca no bicho"})),
+  ...PARTES.flatMap(p=>[
+    {id:"cade_"+p.id,  g:"Corpo", fala:"Cadê "+p.art+" "+p.nome+"?", quando:"Pergunta"},
+    {id:"parte_"+p.id, g:"Corpo", fala:cap(p.nome)+"!", quando:"Quando ele acha"}
+  ]),
+  {id:"arca_inicio", g:"Bíblia: Arca de Noé", fala:"Vamos ajudar Noé? Os bichinhos vão entrar na arca!", quando:"Começo"},
+  {id:"arca_chuva",  g:"Bíblia: Arca de Noé", fala:"Chuva, chuva! Plic, plic, plic!", quando:"Quando começa a chover"},
+  {id:"arca_arco",   g:"Bíblia: Arca de Noé", fala:"Olha o arco-íris! Deus cuida de nós!", quando:"Final"},
+  {id:"ovelha_inicio", g:"Bíblia: Ovelhinha", fala:"O pastor perdeu uma ovelhinha. Cadê a ovelhinha?", quando:"Começo de cada rodada"},
+  {id:"ovelha_nao",    g:"Bíblia: Ovelhinha", fala:"Aqui não!", quando:"Lugar errado"},
+  {id:"ovelha_achou",  g:"Bíblia: Ovelhinha", fala:"Achou! Méééé! Jesus cuida de nós!", quando:"Quando acha"},
+  {id:"cria_inicio",   g:"Bíblia: Deus criou", fala:"No começo, tudo era escuro.", quando:"Começo"},
+  {id:"cria_luz",      g:"Bíblia: Deus criou", fala:"Deus fez a luz!", quando:"Toque 1"},
+  {id:"cria_sol",      g:"Bíblia: Deus criou", fala:"Deus fez o sol!", quando:"Toque 2"},
+  {id:"cria_lua",      g:"Bíblia: Deus criou", fala:"Deus fez a lua!", quando:"Toque 3"},
+  {id:"cria_estrelas", g:"Bíblia: Deus criou", fala:"Deus fez as estrelas!", quando:"Toque 4"},
+  {id:"cria_peixes",   g:"Bíblia: Deus criou", fala:"Deus fez os peixes!", quando:"Toque 5"},
+  {id:"cria_passaros", g:"Bíblia: Deus criou", fala:"Deus fez os passarinhos!", quando:"Toque 6"},
+  {id:"cria_voce",     g:"Bíblia: Deus criou", fala:"Deus fez você! Deus te ama!", quando:"Final"},
+  {id:"jonas_inicio",  g:"Bíblia: Jonas", fala:"Esse é o Jonas. Olha o peixão!", quando:"Começo"},
+  {id:"jonas_abre",    g:"Bíblia: Jonas", fala:"Abre!", quando:"Peixão abre a boca"},
+  {id:"jonas_fecha",   g:"Bíblia: Jonas", fala:"Fecha!", quando:"Peixão fecha a boca"},
+  {id:"jonas_fim",     g:"Bíblia: Jonas", fala:"O peixão devolveu o Jonas! Deus cuida de nós!", quando:"Final"}
+];
+
+/* ================= Desenhos ================= */
+function monstroSVG(cls=""){
+  return `<div class="monstro nhac-img ${cls}"><img class="n-normal" src="img/nhac.webp" alt="Nhac"><img class="n-come" src="img/nhac-come.webp" alt=""><img class="n-dorme" src="img/nhac-dorme.webp" alt=""><span class="hit-boca" data-part="boca"></span></div>`;
+}
+const PARTES_XY = {"olho": [[39, 26, 13, 11], [58, 26, 13, 11]], "nariz": [[49, 30.5, 7, 5]], "boca": [[49, 36.5, 15, 7]], "orelha": [[26, 31, 10, 12], [71, 31, 10, 12]], "mao": [[22, 65, 17, 13], [74, 65, 17, 13]], "pe": [[35, 92, 22, 11], [60, 92, 22, 11]]};
+function meninoSVG(cls=""){
+  const ordem=["pe","mao","orelha","boca","olho","nariz"];
+  let vis="", hits="";
+  for(const k of ordem){
+    const zs=PARTES_XY[k];
+    vis+=`<span class="vp" data-vis="${k}">`+zs.map(([x,y,w,h])=>`<i class="anel-p" style="left:${x}%;top:${y}%;width:${w*1.25}%;height:${h*1.25}%"></i>`).join("")+`</span>`;
+    hits+=zs.map(([x,y,w,h])=>`<span class="hit" data-part="${k}" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"></span>`).join("");
+  }
+  return `<div class="monstro menino-img ${cls}"><img src="img/menino.webp" alt="Menino">${vis}${hits}</div>`;
+}
+function ratoSVG(cheio=false){
+  return `<img class="cab" src="img/${cheio?"rato-dorme":"rato"}.webp" alt="" style="width:100%;display:block">`;
+}
+let nBola=0;
+function bolaSVG(c){
+  const id="g"+(nBola++), P=(cx,cy,r,rot)=>{ let pts=[]; for(let k=0;k<5;k++){ const a=(rot+72*k)*Math.PI/180; pts.push((cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1)); } return pts.join(" "); };
+  let fora="", costura="";
+  for(let k=0;k<5;k++){
+    const a=(-90+72*k)*Math.PI/180, x=50+47*Math.cos(a), y=50+47*Math.sin(a);
+    fora+=`<polygon points="${P(x,y,12,-90+72*k+180)}"/>`;
+    const vx=50+12*Math.cos(a), vy=50+12*Math.sin(a), ex=50+36*Math.cos(a), ey=50+36*Math.sin(a);
+    costura+=`<line x1="${vx.toFixed(1)}" y1="${vy.toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}"/>`;
+  }
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs><radialGradient id="${id}" cx="36%" cy="30%" r="75%"><stop offset="0" stop-color="${c.cl}"/><stop offset=".55" stop-color="${c.hex}"/><stop offset="1" stop-color="${c.cd}"/></radialGradient>
+  <radialGradient id="${id}b" cx="35%" cy="25%" r="40%"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="${id}s" cx="45%" cy="40%" r="62%"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></radialGradient>
+  <clipPath id="${id}c"><circle cx="50" cy="50" r="48"/></clipPath></defs>
+  <circle cx="50" cy="50" r="48" fill="url(#${id})"/>
+  <g clip-path="url(#${id}c)" fill="#141414" opacity=".92"><polygon points="${P(50,46,12.5,-90)}"/>${fora}</g>
+  <g clip-path="url(#${id}c)" stroke="#141414" stroke-width="1.2" opacity=".3">${costura}</g>
+  <circle cx="50" cy="50" r="48" fill="url(#${id}s)"/>
+  <circle cx="50" cy="50" r="48" fill="url(#${id}b)"/>
+  <circle cx="50" cy="50" r="47" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="2"/>
+</svg>`;
+}
+
+/* ================= Desenhos (sem emoji) ================= */
+const sv=(vb,c)=>`<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;overflow:visible">${c}</svg>`;
+const olhos=(x1,x2,y,r=5)=>`<circle cx="${x1}" cy="${y}" r="${r}" fill="#2B2B2B"/><circle cx="${x2}" cy="${y}" r="${r}" fill="#2B2B2B"/><circle cx="${x1+1.6}" cy="${y-1.8}" r="${r*.38}" fill="#fff"/><circle cx="${x2+1.6}" cy="${y-1.8}" r="${r*.38}" fill="#fff"/>`;
+const A0 = {
+  cachorro:()=>sv("0 0 100 100",`<ellipse cx="20" cy="48" rx="12" ry="25" fill="#8B5A2B" transform="rotate(18 20 48)"/><ellipse cx="80" cy="48" rx="12" ry="25" fill="#8B5A2B" transform="rotate(-18 80 48)"/>
+    <circle cx="50" cy="50" r="32" fill="#D9A066"/><ellipse cx="38" cy="42" rx="10" ry="11" fill="#B97A3E"/>
+    <ellipse cx="50" cy="66" rx="18" ry="13" fill="#F6DDB8"/>${olhos(38,62,44)}<ellipse cx="50" cy="59" rx="7" ry="5" fill="#3B2412"/>
+    <path d="M44 68 Q50 73 56 68" stroke="#3B2412" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M47 71 Q50 80 53 71Z" fill="#FF7B93"/>`),
+  gato:()=>sv("0 0 100 100",`<path d="M22 34 L26 6 L46 24Z" fill="#E8913E"/><path d="M78 34 L74 6 L54 24Z" fill="#E8913E"/><path d="M27 28 L29 13 L40 24Z" fill="#FFB3C4"/><path d="M73 28 L71 13 L60 24Z" fill="#FFB3C4"/>
+    <circle cx="50" cy="54" r="32" fill="#F2A65A"/><path d="M44 24 L46 34 M50 22 L50 34 M56 24 L54 34" stroke="#D07A2C" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="50" cy="66" rx="15" ry="10" fill="#FFF1DF"/>${olhos(38,62,50)}<path d="M46 59 L54 59 L50 64Z" fill="#FF7B93"/>
+    <path d="M44 67 Q47 70 50 67 Q53 70 56 67" stroke="#7A4A20" stroke-width="2" fill="none"/><path d="M30 62 L12 58 M30 66 L13 68 M70 62 L88 58 M70 66 L87 68" stroke="#7A4A20" stroke-width="1.6"/>`),
+  vaca:()=>sv("0 0 100 100",`<path d="M30 20 Q24 6 32 4 Q34 14 38 20Z" fill="#F1E3C3"/><path d="M70 20 Q76 6 68 4 Q66 14 62 20Z" fill="#F1E3C3"/>
+    <ellipse cx="14" cy="36" rx="13" ry="7" fill="#fff" stroke="#2B2B2B" stroke-width="2" transform="rotate(-15 14 36)"/><ellipse cx="86" cy="36" rx="13" ry="7" fill="#fff" stroke="#2B2B2B" stroke-width="2" transform="rotate(15 86 36)"/>
+    <ellipse cx="50" cy="48" rx="31" ry="33" fill="#fff" stroke="#2B2B2B" stroke-width="2"/><path d="M28 28 Q38 22 42 34 Q34 44 24 38Z" fill="#2B2B2B"/><path d="M64 46 Q76 40 78 54 Q68 58 64 46Z" fill="#2B2B2B"/>
+    ${olhos(39,61,44)}<ellipse cx="50" cy="70" rx="23" ry="14" fill="#F7B3C2"/><ellipse cx="42" cy="70" rx="3.5" ry="4.5" fill="#B05A6E"/><ellipse cx="58" cy="70" rx="3.5" ry="4.5" fill="#B05A6E"/>`),
+  pato:()=>sv("0 0 100 100",`<ellipse cx="58" cy="68" rx="32" ry="22" fill="#FFD84A"/><path d="M84 60 Q98 52 92 68Z" fill="#F5C400"/>
+    <path d="M48 66 Q62 56 74 70 Q60 78 48 66Z" fill="#F5C400"/><circle cx="40" cy="38" r="22" fill="#FFD84A"/>
+    <ellipse cx="16" cy="44" rx="13" ry="6" fill="#FF8A00"/><path d="M5 45 L28 45" stroke="#D96F00" stroke-width="1.5"/>
+    <circle cx="36" cy="33" r="5" fill="#2B2B2B"/><circle cx="37.6" cy="31.2" r="1.9" fill="#fff"/><circle cx="46" cy="44" r="4" fill="#FFB3C4" opacity=".8"/>
+    <path d="M40 16 Q42 8 48 12" stroke="#F5C400" stroke-width="3" fill="none" stroke-linecap="round"/>`),
+  porco:()=>sv("0 0 100 100",`<path d="M22 30 L20 8 L42 22Z" fill="#FF9DB4"/><path d="M78 30 L80 8 L58 22Z" fill="#FF9DB4"/>
+    <circle cx="50" cy="52" r="33" fill="#FFB8C8"/>${olhos(37,63,44)}<circle cx="28" cy="58" r="6" fill="#FF8FA8" opacity=".6"/><circle cx="72" cy="58" r="6" fill="#FF8FA8" opacity=".6"/>
+    <ellipse cx="50" cy="62" rx="15" ry="11" fill="#FF8FA8" stroke="#E06D8B" stroke-width="2"/><ellipse cx="45" cy="62" rx="3" ry="4.5" fill="#B5466A"/><ellipse cx="55" cy="62" rx="3" ry="4.5" fill="#B5466A"/>
+    <path d="M43 77 Q50 82 57 77" stroke="#B5466A" stroke-width="2.4" fill="none" stroke-linecap="round"/>`),
+  ovelha:()=>sv("0 0 100 100",`${[[50,20],[30,26],[70,26],[20,44],[80,44],[26,64],[74,64],[40,74],[60,74],[50,40]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="17" fill="#fff" stroke="#D9D9E3" stroke-width="2"/>`).join("")}
+    <ellipse cx="22" cy="54" rx="12" ry="6" fill="#5A4A44" transform="rotate(20 22 54)"/><ellipse cx="78" cy="54" rx="12" ry="6" fill="#5A4A44" transform="rotate(-20 78 54)"/>
+    <ellipse cx="50" cy="58" rx="18" ry="22" fill="#5A4A44"/><circle cx="43" cy="54" r="6" fill="#fff"/><circle cx="57" cy="54" r="6" fill="#fff"/>${olhos(44,58,55,3.4)}
+    <path d="M45 68 Q50 72 55 68" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>${[[42,36],[50,33],[58,36]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="7" fill="#fff"/>`).join("")}`)
+};
+const D0 = {
+  casa:()=>sv("0 0 100 100",`<path d="M14 50 L50 16 L86 50Z" fill="#F2545B"/><rect x="24" y="46" width="52" height="40" rx="4" fill="#FFD34E"/><rect x="43" y="60" width="16" height="26" rx="3" fill="#8B5A2B"/><rect x="30" y="54" width="10" height="10" fill="#9FE0FF"/><rect x="62" y="54" width="10" height="10" fill="#9FE0FF"/>`),
+  livro:()=>sv("0 0 100 100",`<path d="M50 24 Q30 14 10 20 L10 80 Q30 74 50 84Z" fill="#fff" stroke="#8B5A2B" stroke-width="4"/><path d="M50 24 Q70 14 90 20 L90 80 Q70 74 50 84Z" fill="#fff" stroke="#8B5A2B" stroke-width="4"/>
+    <path d="M20 34 Q32 31 42 35 M20 44 Q32 41 42 45 M20 54 Q32 51 42 55" stroke="#C9B9A8" stroke-width="3"/><rect x="66" y="32" width="6" height="34" fill="#F5B800"/><rect x="58" y="42" width="22" height="6" fill="#F5B800"/>`),
+  arcoiris:()=>sv("0 0 100 70",`<g fill="none" stroke-width="7">${["#E8131B","#FF8A00","#F5D000","#4FD80F","#2A1FE0","#9C5CFF"].map((c,i)=>`<path d="M${6+i*7} 66 A${44-i*7} ${44-i*7} 0 0 1 ${94-i*7} 66" stroke="${c}"/>`).join("")}</g><circle cx="14" cy="62" r="10" fill="#fff"/><circle cx="24" cy="64" r="8" fill="#fff"/><circle cx="86" cy="62" r="10" fill="#fff"/><circle cx="76" cy="64" r="8" fill="#fff"/>`),
+  sol:()=>sv("0 0 100 100",`<g fill="#FFB800">${Array.from({length:12},(_,i)=>`<path d="M50 2 L56 18 L44 18Z" transform="rotate(${i*30} 50 50)"/>`).join("")}</g>
+    <circle cx="50" cy="50" r="30" fill="#FFD84A" stroke="#FFB800" stroke-width="3"/>${olhos(41,59,46,3.6)}<path d="M40 58 Q50 67 60 58" stroke="#C46A00" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="34" cy="56" r="4" fill="#FF8FA3" opacity=".7"/><circle cx="66" cy="56" r="4" fill="#FF8FA3" opacity=".7"/>`),
+  lua:()=>sv("0 0 100 100",`<path d="M62 8 A42 42 0 1 0 92 70 A34 34 0 1 1 62 8Z" fill="#FFE27A" stroke="#F5C400" stroke-width="3"/><path d="M36 50 Q40 54 44 50" stroke="#B08900" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="34" cy="60" r="4" fill="#FF8FA3" opacity=".6"/>`),
+  estrela:(c="#FFD84A")=>sv("0 0 100 100",`<path d="M50 6 L62 36 L94 38 L69 58 L78 90 L50 72 L22 90 L31 58 L6 38 L38 36Z" fill="${c}" stroke="#F5B800" stroke-width="3" stroke-linejoin="round"/>`),
+  peixe:(c="#FF8A00")=>sv("0 0 100 70",`<path d="M70 35 L96 12 L92 35 L96 58Z" fill="${c}"/><ellipse cx="44" cy="35" rx="34" ry="24" fill="${c}"/><path d="M44 12 Q54 0 62 14Z" fill="${c}"/>
+    <path d="M40 18 Q48 35 40 52" stroke="#fff" stroke-width="4" fill="none" opacity=".7"/><circle cx="24" cy="30" r="6" fill="#fff"/><circle cx="23" cy="30" r="3.2" fill="#2B2B2B"/><path d="M12 42 Q16 45 20 42" stroke="#2B2B2B" stroke-width="2" fill="none"/>`),
+  passaro:(c="#2A9DF4")=>sv("0 0 100 80",`<path d="M80 40 L98 30 L96 50Z" fill="${c}"/><ellipse cx="52" cy="44" rx="32" ry="26" fill="${c}"/><ellipse cx="52" cy="54" rx="20" ry="13" fill="#fff" opacity=".7"/>
+    <path d="M50 36 Q66 14 80 34 Q66 40 50 36Z" fill="#fff" opacity=".55"/><path d="M20 40 L6 44 L20 48Z" fill="#FF8A00"/><circle cx="32" cy="36" r="4.5" fill="#2B2B2B"/><circle cx="33.4" cy="34.6" r="1.6" fill="#fff"/>`),
+  coracao:()=>sv("0 0 100 100",`<defs><radialGradient id="crg" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#FF9DB4"/><stop offset=".6" stop-color="#F2365B"/><stop offset="1" stop-color="#B0123A"/></radialGradient></defs><path d="M50 88 C10 60 4 30 26 18 C40 10 50 22 50 30 C50 22 60 10 74 18 C96 30 90 60 50 88Z" fill="url(#crg)"/><ellipse cx="32" cy="32" rx="8" ry="5" fill="#fff" opacity=".6" transform="rotate(-30 32 32)"/>`),
+  arvore:()=>sv("0 0 100 110",`<rect x="42" y="62" width="16" height="46" rx="5" fill="#8B5A2B"/><circle cx="50" cy="34" r="28" fill="#4CB944"/><circle cx="28" cy="52" r="22" fill="#3FA83A"/><circle cx="72" cy="52" r="22" fill="#3FA83A"/><circle cx="50" cy="58" r="20" fill="#4CB944"/><circle cx="40" cy="26" r="7" fill="#6FD86A" opacity=".8"/>`),
+  pedra:()=>sv("0 0 100 100",`<path d="M8 96 Q4 58 26 44 Q38 20 62 28 Q90 34 94 66 Q98 92 90 96Z" fill="#9AA3B2"/><path d="M26 50 Q38 30 58 34" stroke="#C9D0DB" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M62 60 Q74 64 78 78" stroke="#7D8696" stroke-width="4" fill="none" stroke-linecap="round"/>`),
+  moita:()=>sv("0 0 100 100",`${[[22,70,22],[45,58,26],[70,62,24],[84,78,16],[50,80,22],[14,84,14]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#58C24C"/>`).join("")}<circle cx="38" cy="50" r="6" fill="#FF7B93"/><circle cx="66" cy="54" r="6" fill="#FFD84A"/><circle cx="56" cy="72" r="5" fill="#FF7B93"/><rect x="0" y="92" width="100" height="8" fill="#58C24C"/>`),
+  ovelhaCorpo:()=>sv("0 0 120 100",`<rect x="34" y="66" width="9" height="26" rx="4" fill="#5A4A44"/><rect x="78" y="66" width="9" height="26" rx="4" fill="#5A4A44"/>
+    ${[[60,40],[42,44],[78,44],[34,58],[86,58],[50,64],[70,64],[60,52]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="17" fill="#fff" stroke="#D9D9E3" stroke-width="2"/>`).join("")}
+    <ellipse cx="18" cy="44" rx="11" ry="5" fill="#5A4A44" transform="rotate(25 18 44)"/><ellipse cx="22" cy="50" rx="13" ry="16" fill="#5A4A44"/><circle cx="18" cy="46" r="4.5" fill="#fff"/><circle cx="27" cy="46" r="4.5" fill="#fff"/><circle cx="18.5" cy="47" r="2.4" fill="#2B2B2B"/><circle cx="27.5" cy="47" r="2.4" fill="#2B2B2B"/><circle cx="22" cy="34" r="7" fill="#fff"/>`),
+  peixao:()=>sv("0 0 120 90",`<path d="M96 45 L118 22 L114 45 L118 68Z" fill="#1F7FC4"/><ellipse cx="58" cy="46" rx="48" ry="34" fill="#2FA4E7"/><ellipse cx="56" cy="62" rx="34" ry="13" fill="#C9F0FF"/><circle cx="34" cy="34" r="9" fill="#fff"/><circle cx="32" cy="35" r="4.5" fill="#2B3A55"/><path d="M14 52 Q30 62 44 55" stroke="#123E6B" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M56 12 Q54 2 48 4 M60 12 Q62 0 68 4" stroke="#8EDCFF" stroke-width="3" fill="none" stroke-linecap="round"/>`),
+  jonas:()=>sv("0 0 100 120",`<path d="M28 116 L34 62 Q50 54 66 62 L72 116Z" fill="#C98B4F"/><path d="M44 62 L50 116 L56 62Z" fill="#E9C38F"/><rect x="40" y="70" width="20" height="5" fill="#8B5A2B"/>
+    <path d="M34 70 Q20 80 22 92" stroke="#C98B4F" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M66 70 Q80 64 84 52" stroke="#C98B4F" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="22" cy="94" r="6" fill="#F1C27D"/><circle cx="85" cy="49" r="6" fill="#F1C27D"/>
+    <circle cx="50" cy="36" r="22" fill="#F1C27D"/><path d="M28 34 Q30 12 50 12 Q70 12 72 34 Q66 22 50 22 Q34 22 28 34Z" fill="#6B4226"/>
+    <path d="M30 40 Q32 64 50 64 Q68 64 70 40 Q64 52 50 52 Q36 52 30 40Z" fill="#6B4226"/>${olhos(42,58,36,3.4)}<path d="M44 46 Q50 50 56 46" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/>`),
+  barco:()=>sv("0 0 120 50",`<path d="M4 10 L116 10 Q108 44 60 46 Q12 44 4 10Z" fill="#B5562B"/><path d="M10 20 L110 20" stroke="#8B3E1B" stroke-width="4"/>`)
+};
+const A = Object.fromEntries(["cachorro","gato","vaca","pato","porco","ovelha"].map(n=>[n,()=>`<img class="img-bloco" src="img/b-${n}.webp" alt="">`]));
+const ImgD = n => () => `<img class="img-bloco" src="img/${n}.webp" alt="">`;
+const D = Object.assign({}, D0, {
+  livro:ImgD("biblia"), arcoiris:ImgD("arcoiris"), sol:ImgD("sol"), lua:ImgD("lua"), estrela:ImgD("estrela"),
+  coracao:ImgD("coracao"), arvore:ImgD("arvore"), pedra:ImgD("pedra"), moita:ImgD("moita"),
+  ovelhaCorpo:ImgD("b-ovelha"), peixao:ImgD("peixao"), jonas:ImgD("jonas-barco"),
+  peixe:(c)=>`<img class="img-bloco" src="img/peixe.webp" alt="" style="filter:hue-rotate(${({"#FF8A00":0,"#FF4F9A":-40,"#F5D000":30})[c]||0}deg)">`,
+  passaro:(c)=>`<img class="img-bloco" src="img/passaro.webp" alt="" style="filter:hue-rotate(${({"#2A9DF4":0,"#FF4F9A":120,"#FFD84A":-160})[c]||0}deg)">`
+});
+D.estrelaConfete = D0.estrela;
+function preencherDesenhos(raiz=document){ raiz.querySelectorAll("[data-des]").forEach(e=>{ const f=D[e.dataset.des]; if(f) e.innerHTML=f(); }); }
+
+/* ================= Estado ================= */
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem("nhac_"+k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem("nhac_"+k, JSON.stringify(v)); }catch(e){} }
+};
+let cfg = { min: LS.get("min",15), modo: LS.get("modo","junto") };
+let sess = LS.get("sess", null); // {total, resta}
+let telaAtual = null;
+const $ = s => document.querySelector(s);
+
+/* ================= Áudio ================= */
+let ctx = null, fonteAtual = null;
+const buffers = {};      // id -> AudioBuffer
+const gravados = new Set();
+function audio(){
+  if(!ctx){ const AC = window.AudioContext||window.webkitAudioContext; if(AC) ctx = new AC(); }
+  if(ctx && ctx.state==="suspended") ctx.resume();
+  return ctx;
+}
+document.addEventListener("pointerdown", audio, {passive:true});
+document.addEventListener("touchend", audio, {passive:true});
+
+function tom(f1,f2,dur,tipo="sine",vol=.18,atraso=0){
+  const c=audio(); if(!c) return;
+  const t=c.currentTime+atraso, o=c.createOscillator(), g=c.createGain();
+  o.type=tipo; o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t+dur+.02);
+}
+const SFX = {
+  pop(){ tom(520,980,.13,"sine",.2); },
+  boing(){ tom(330,150,.32,"triangle",.16); },
+  nhac(){ tom(180,120,.07,"square",.08); tom(170,110,.07,"square",.08,.14); tom(190,120,.07,"square",.08,.28); },
+  festa(){ tom(660,660,.12,"sine",.14); tom(880,880,.12,"sine",.14,.12); tom(1320,1320,.22,"sine",.14,.24); },
+  noite(){ tom(660,440,.5,"sine",.12); tom(550,330,.7,"sine",.1,.4); }
+};
+function falar(id){
+  return new Promise(res=>{
+    const c=audio(), b=buffers[id];
+    if(fonteAtual){ try{fonteAtual.onended=null; fonteAtual.stop();}catch(e){} fonteAtual=null; }
+    if(!c || !b){ setTimeout(res, 350); return; }
+    const s=c.createBufferSource(); s.buffer=b;
+    const g=c.createGain(); g.gain.value=1.25; s.connect(g).connect(c.destination);
+    s.onended=()=>{ if(fonteAtual===s) fonteAtual=null; res(); };
+    fonteAtual=s; s.start();
+  });
+}
+
+/* ================= Banco de gravações (fica só no tablet) ================= */
+let db=null;
+function abrirBanco(){
+  return new Promise(res=>{
+    try{
+      const r=indexedDB.open("nhac-voz",1);
+      r.onupgradeneeded=()=>r.result.createObjectStore("clips");
+      r.onsuccess=()=>{ db=r.result; res(); };
+      r.onerror=()=>res();
+    }catch(e){ res(); }
+  });
+}
+function salvarClip(id,blob){
+  return new Promise(res=>{ if(!db) return res(); const tx=db.transaction("clips","readwrite"); tx.objectStore("clips").put(blob,id); tx.oncomplete=res; tx.onerror=res; });
+}
+function lerTodos(){
+  return new Promise(res=>{
+    if(!db) return res({});
+    const out={}, tx=db.transaction("clips","readonly"), st=tx.objectStore("clips");
+    const rq=st.openCursor();
+    rq.onsuccess=()=>{ const cur=rq.result; if(cur){ out[cur.key]=cur.value; cur.continue(); } else res(out); };
+    rq.onerror=()=>res(out);
+  });
+}
+function decodificar(blob){
+  return blob.arrayBuffer().then(ab=>new Promise((ok,err)=>{
+    const c=audio(); if(!c) return err();
+    const p=c.decodeAudioData(ab,ok,err); if(p&&p.then) p.then(ok,err);
+  }));
+}
+const blobs={};
+async function carregarVoz(){
+  await abrirBanco();
+  const todos=await lerTodos();
+  for(const id in todos){ blobs[id]=todos[id]; gravados.add(id); }
+}
+async function prepararBuffers(){
+  for(const id in blobs){ if(!buffers[id]){ try{ buffers[id]=await decodificar(blobs[id]); }catch(e){} } }
+}
+
+/* ================= Navegação ================= */
+const TELAS_CRIANCA = ["menu","cores","bichos","corpo","biblia","arca","ovelha","criacao","jonas"];
+function ir(nome){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $("#s-"+nome).classList.add("active");
+  telaAtual=nome;
+  const crianca=TELAS_CRIANCA.includes(nome);
+  $("#barra").classList.toggle("on", crianca);
+  $("#bt-eng").style.display = crianca ? "block" : "none";
+  if(nome==="adulto") montarAdulto();
+  if(nome==="gravar") montarGravar();
+  if(nome==="menu") entrarMenu();
+  if(nome==="cores") novaRodadaCor(true);
+  if(nome==="bichos") $("#show-bicho").classList.remove("on");
+  if(nome==="corpo") novaRodadaCorpo(true);
+  if(nome==="fim") entrarFim();
+  if(nome==="arca") iniciarArca();
+  if(nome==="ovelha") iniciarOvelha(true);
+  if(nome==="criacao") iniciarCriacao();
+  if(nome==="jonas") iniciarJonas();
+  requestAnimationFrame(desenharQueijo);
+}
+document.querySelectorAll("[data-casa]").forEach(b=>b.addEventListener("click",()=>{ SFX.pop(); ir(b.dataset.casa||"menu"); }));
+document.querySelectorAll("[data-ir]").forEach(b=>b.addEventListener("click",()=>{ SFX.pop(); ir(b.dataset.ir); }));
+
+/* Botão de segurar (porteira para adulto) */
+function segurar(el, ms, acao, vertical=false){
+  const enche=el.querySelector(".enche"); let t0=0, raf=0;
+  const parar=()=>{ cancelAnimationFrame(raf); t0=0; if(enche) enche.style.transform = vertical?"scaleY(0)":"scaleX(0)"; };
+  const passo=()=>{ const p=Math.min(1,(performance.now()-t0)/ms);
+    if(enche) enche.style.transform = vertical?`scaleY(${p})`:`scaleX(${p})`;
+    if(p>=1){ parar(); acao(); } else raf=requestAnimationFrame(passo); };
+  el.addEventListener("pointerdown",e=>{ e.preventDefault(); audio(); t0=performance.now(); raf=requestAnimationFrame(passo); });
+  ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev,parar));
+  el.addEventListener("contextmenu",e=>e.preventDefault());
+}
+
+/* ================= Tela do adulto ================= */
+function montarAdulto(){
+  pararMicrofone();
+  $("#mini-m").innerHTML = monstroSVG();
+  const ct=$("#chips-tempo"); ct.innerHTML="";
+  [5,10,15,20,30].forEach(m=>{
+    const b=document.createElement("button"); b.className="chip"+(cfg.min===m?" on":""); b.textContent=m+" min";
+    b.onclick=()=>{ cfg.min=m; LS.set("min",m); montarAdulto(); }; ct.appendChild(b);
+  });
+  document.querySelectorAll("#chips-modo .chip").forEach(b=>{
+    b.classList.toggle("on", b.dataset.modo===cfg.modo);
+    b.onclick=()=>{ cfg.modo=b.dataset.modo; LS.set("modo",cfg.modo); aplicarModo(); montarAdulto(); };
+  });
+  const n=CLIPS.filter(c=>gravados.has(c.id)).length;
+  $("#voz-num").textContent = `${n} de ${CLIPS.length} falas gravadas`;
+  $("#voz-aviso").textContent = n<CLIPS.length ? `Faltam ${CLIPS.length-n}. As falas que não foram gravadas ficam mudas no jogo (só toca um barulhinho).` : "";
+}
+function aplicarModo(){ document.body.classList.toggle("junto", cfg.modo==="junto"); }
+$("#bt-ir-gravar").onclick=()=>ir("gravar");
+segurar($("#bt-comecar"), 2000, async ()=>{
+  audio(); await prepararBuffers();
+  sess={ total:cfg.min*60000, resta:cfg.min*60000 }; LS.set("sess",sess); LS.set("travado",false);
+  ir("menu");
+});
+
+/* ================= Gravar ================= */
+let stream=null, rec=null, gravandoId=null, autoStop=0;
+function pararMicrofone(){ if(rec && rec.state==="recording"){ try{rec.stop();}catch(e){} } if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } }
+function tipoAudio(){
+  if(!window.MediaRecorder) return "";
+  for(const t of ["audio/mp4","audio/aac","audio/webm;codecs=opus","audio/webm"]) if(MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) return t;
+  return "";
+}
+function montarGravar(){
+  const L=$("#lista-grav"); L.innerHTML="";
+  let grupo="";
+  CLIPS.forEach(c=>{
+    if(c.g!==grupo){ grupo=c.g; const h=document.createElement("div"); h.className="rotulo grupo-t"; h.textContent=grupo; L.appendChild(h); }
+    const row=document.createElement("div"); row.className="linha";
+    row.innerHTML=`<div class="ok">${gravados.has(c.id)?"✓":"○"}</div><div class="fala">${c.fala}<small>${c.quando}</small></div>
+      <button class="bt-ouvir" ${gravados.has(c.id)?"":"disabled"}>▶</button><button class="bt-grav">Gravar</button>`;
+    const [bOuvir,bGrav]=row.querySelectorAll("button");
+    bOuvir.onclick=async()=>{ audio(); if(!buffers[c.id] && blobs[c.id]){ try{buffers[c.id]=await decodificar(blobs[c.id]);}catch(e){} } falar(c.id); };
+    bGrav.onclick=()=>alternarGravacao(c, row);
+    L.appendChild(row);
+  });
+}
+async function alternarGravacao(c,row){
+  audio();
+  const bGrav=row.querySelector(".bt-grav");
+  if(rec && rec.state==="recording"){ if(gravandoId===c.id){ rec.stop(); } return; }
+  if(!window.MediaRecorder || !navigator.mediaDevices){ alert("Este navegador não deixa gravar. Abra o jogo pelo Safari (iPad) ou Chrome (Android)."); return; }
+  try{ if(!stream) stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}); }
+  catch(e){ alert("O tablet não deu permissão para o microfone. Toque em 'Permitir' quando ele perguntar. Se não aparecer, veja nos Ajustes do tablet a permissão de microfone do navegador."); return; }
+  const tipo=tipoAudio(), partes=[];
+  rec = tipo ? new MediaRecorder(stream,{mimeType:tipo}) : new MediaRecorder(stream);
+  gravandoId=c.id;
+  rec.ondataavailable=e=>{ if(e.data && e.data.size) partes.push(e.data); };
+  rec.onstop=async()=>{
+    clearTimeout(autoStop); gravandoId=null;
+    bGrav.classList.remove("gravando"); bGrav.textContent="Gravar";
+    const blob=new Blob(partes,{type:rec.mimeType||tipo||"audio/mp4"});
+    if(blob.size<500) return;
+    blobs[c.id]=blob; gravados.add(c.id); await salvarClip(c.id,blob);
+    try{ buffers[c.id]=await decodificar(blob); }catch(e){ delete buffers[c.id]; }
+    row.querySelector(".ok").textContent="✓"; row.querySelector(".bt-ouvir").disabled=false;
+    falar(c.id);
+  };
+  rec.start(); bGrav.classList.add("gravando"); bGrav.textContent="Parar";
+  autoStop=setTimeout(()=>{ if(rec && rec.state==="recording") rec.stop(); },6000);
+}
+$("#bt-voltar-grav").onclick=()=>ir("adulto");
+
+/* ================= Menu ================= */
+let jaDisseOi=false;
+function entrarMenu(){
+  $("#menu-m").innerHTML=monstroSVG("respira");
+  const m=$("#menu-m .monstro");
+  if(!jaDisseOi) setTimeout(()=>{ m.classList.add("aberta"); falar("oi").then(()=>m.classList.remove("aberta")); }, 300);
+  jaDisseOi=true;
+  m.addEventListener("click",()=>{ m.classList.add("aberta"); SFX.pop(); falar("oi").then(()=>m.classList.remove("aberta")); });
+}
+$("#ic-corpo").innerHTML = meninoSVG();
+preencherDesenhos();
+$("#ic-cores").innerHTML = [CORES[0],CORES[1]].map(c=>`<div style="width:min(7vmin,58px);height:min(7vmin,58px)">${bolaSVG(c)}</div>`).join("");
+
+/* ================= Cores ================= */
+let corAlvo=null, acertosCor=0, travaCor=false;
+function sortear(arr, evita){ let x; do{ x=arr[Math.floor(Math.random()*arr.length)]; }while(arr.length>1 && x===evita); return x; }
+function embaralhar(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function novaRodadaCor(primeira){
+  travaCor=false;
+  if(primeira) $("#cores-m").innerHTML=monstroSVG("respira");
+  const n = acertosCor<3 ? 2 : acertosCor<8 ? 3 : 4;
+  corAlvo = sortear(CORES, corAlvo);
+  const outras = embaralhar(CORES.filter(c=>c!==corAlvo)).slice(0,n-1);
+  const escolhas = embaralhar([corAlvo,...outras]);
+  $("#pingo-cor").innerHTML=bolaSVG(corAlvo);
+  const tc=$("#txt-cor"); tc.textContent=corAlvo.nome+"!"; tc.style.color=corAlvo.hex;
+  $("#dica-cores").innerHTML=`Fale junto: <b>"${corAlvo.nome.toUpperCase()}!"</b> Aponte para a bolinha e espere uns segundos ele tentar falar.`;
+  const B=$("#bolas"); B.innerHTML="";
+  escolhas.forEach(c=>{
+    const b=document.createElement("button"); b.className="bola"; b.innerHTML=bolaSVG(c); b.dataset.cor=c.id;
+    b.onclick=()=>tocarBola(b,c); B.appendChild(b);
+  });
+  const m=$("#cores-m .monstro"); m.classList.add("aberta");
+  setTimeout(()=>falar("cor_"+corAlvo.id).then(()=>m.classList.remove("aberta")), primeira?400:150);
+}
+function tocarBola(b,c){
+  if(travaCor) return;
+  const m=$("#cores-m .monstro");
+  if(c!==corAlvo){
+    SFX.boing(); anima(m,"balanca",1000);
+    const certa=document.querySelector(`.bola[data-cor="${corAlvo.id}"]`);
+    anima(certa,"mexe",1600);
+    falar("cor_"+corAlvo.id); return;
+  }
+  travaCor=true; acertosCor++;
+  m.classList.add("aberta");
+  const alvo=m.querySelector('[data-part="boca"]').getBoundingClientRect(), r=b.getBoundingClientRect();
+  const dx=(alvo.left+alvo.width/2)-(r.left+r.width/2), dy=(alvo.top+alvo.height/2)-(r.top+r.height/2);
+  b.style.zIndex=5; b.style.transform=`translate(${dx}px,${dy}px) scale(.25)`; b.style.opacity="0";
+  setTimeout(async()=>{
+    m.classList.remove("aberta"); SFX.nhac();
+    anima(m,"pula",700);
+    confete(alvo.left+alvo.width/2, alvo.top);
+    await falar(acertosCor%3===0 ? "nhac" : "cor_"+c.id);
+    if(acertosCor%2===0){ SFX.festa(); await falar("eba"); }
+    setTimeout(()=>novaRodadaCor(false), cfg.modo==="junto"?1800:900);
+  },620);
+}
+
+/* ================= Bichos ================= */
+(function(){
+  const G=$("#grade-bichos");
+  BICHOS.forEach(bi=>{
+    const b=document.createElement("button"); b.className="bicho"; b.innerHTML=`<img src="fotos/${bi.id}.jpg" alt="${bi.nome}" style="object-position:${bi.pos}">`;
+    b.onclick=()=>mostrarBicho(bi); G.appendChild(b);
+  });
+})();
+let fechaShow=0;
+function mostrarBicho(bi){
+  SFX.pop();
+  const S=$("#show-bicho"); clearTimeout(fechaShow);
+  $("#show-em").src=`fotos/${bi.id}.jpg`; $("#show-em").style.objectPosition=bi.pos; $("#show-som").textContent=bi.som; $("#show-som").style.color=bi.cor; $("#show-nome").textContent=bi.nome;
+  const g=$("#show-em"); g.style.animation="none"; void g.offsetWidth; g.style.animation="";
+  $("#dica-bichos").innerHTML=`Imite junto: <b>"${bi.som.toUpperCase()}"</b> Depois pare e espere ele tentar. Vale qualquer pedacinho do som.`;
+  S.classList.add("on");
+  falar("bicho_"+bi.id).then(()=>{ fechaShow=setTimeout(()=>S.classList.remove("on"), cfg.modo==="junto"?3500:1800); });
+}
+$("#show-bicho").addEventListener("click",()=>{ clearTimeout(fechaShow); $("#show-bicho").classList.remove("on"); });
+
+/* ================= Corpo ================= */
+let parteAlvo=null, travaCorpo=false;
+function novaRodadaCorpo(primeira){
+  travaCorpo=false;
+  if(primeira){
+    $("#corpo-m").innerHTML=meninoSVG("grande-m respira");
+    $("#corpo-m .monstro").querySelectorAll(".hit").forEach(h=>h.addEventListener("click",e=>tocarParte(e.currentTarget.dataset.part)));
+  }
+  parteAlvo=sortear(PARTES, parteAlvo);
+  $("#pergunta").innerHTML=`<span class="q palavra">Cadê ${parteAlvo.art} ${parteAlvo.nome}?</span>`;
+  $("#dica-corpo").innerHTML=`Pergunte: <b>"Cadê ${parteAlvo.art} ${parteAlvo.nome.toUpperCase()}?"</b> Quando ele achar, aponte ${parteAlvo.art==="a"?"na":"no"} ${parteAlvo.nome} dele também.`;
+  setTimeout(()=>falar("cade_"+parteAlvo.id), primeira?400:100);
+}
+function tocarParte(id){
+  if(travaCorpo || !id) return;
+  const m=$("#corpo-m .monstro"), vis=m.querySelector(`[data-vis="${parteAlvo.id}"]`);
+  if(id!==parteAlvo.id){
+    SFX.boing(); anima(vis,"mexe",1100);
+    falar("cade_"+parteAlvo.id); return;
+  }
+  travaCorpo=true; SFX.festa();
+  vis.classList.remove("brilha"); void vis.getBoundingClientRect(); vis.classList.add("brilha");
+  const r=(vis.querySelector(".anel-p")||vis).getBoundingClientRect(); confete(r.left+r.width/2, r.top+r.height/2);
+  falar("parte_"+parteAlvo.id).then(async()=>{
+    if(Math.random()<.5) await falar("eba");
+    setTimeout(()=>{ vis.classList.remove("brilha"); novaRodadaCorpo(false); }, cfg.modo==="junto"?2200:1100);
+  });
+}
+
+/* ================= Bíblia: Arca de Noé ================= */
+let filaArca=[], travaArca=false, timersArca=[];
+function limparArca(){ timersArca.forEach(clearTimeout); timersArca=[]; }
+function depois(ms,fn){ const t=setTimeout(fn,ms); timersArca.push(t); return t; }
+function iniciarArca(){
+  limparArca(); travaArca=false;
+  $("#arca").classList.remove("fechada","flutua"); $("#agua-arca").classList.remove("sobe");
+  $("#arco").classList.remove("on"); $("#chuva").classList.remove("on"); $("#denovo-arca").classList.remove("on");
+  const ch=$("#chuva"); if(!ch.children.length){ for(let i=0;i<46;i++){ const g=document.createElement("i"); g.style.left=Math.random()*100+"%"; g.style.animationDelay=(Math.random()*.9)+"s"; ch.appendChild(g);} }
+  filaArca=embaralhar(BICHOS.slice()).slice(0,4);
+  $("#dica-arca").innerHTML='Fale: <b>"Vamos ajudar Noé!"</b> A cada bichinho, faça o som junto e espere ele tentar.';
+  falar("arca_inicio"); mostrarPar();
+}
+function mostrarPar(){
+  const p=$("#par"), bi=filaArca[0];
+  p.style.transition="none"; p.style.transform=""; p.style.opacity="1"; void p.offsetWidth; p.style.transition="";
+  p.innerHTML=`<span>${A[bi.id]()}</span><span>${A[bi.id]()}</span>`; p.style.animation="none"; void p.offsetWidth; p.style.animation="";
+  $("#dica-arca").innerHTML=`Aponte e imite: <b>"${bi.som.toUpperCase()}"</b> Toque nos bichinhos para eles entrarem na arca.`;
+  travaArca=false;
+}
+$("#par").addEventListener("click",()=>{
+  if(travaArca || !filaArca.length) return; travaArca=true;
+  const bi=filaArca.shift(), p=$("#par"), d=$("#porta-arca").getBoundingClientRect(), r=p.getBoundingClientRect();
+  SFX.pop(); falar("bicho_"+bi.id);
+  p.style.transform=`translate(${d.left+d.width/2-(r.left+r.width/2)}px,${d.top+d.height/2-(r.top+r.height/2)}px) scale(.2)`; p.style.opacity="0";
+  depois(1000,()=>{ anima($("#arca"),"balanca",600); if(filaArca.length) depois(900,mostrarPar); else chuvaArca(); });
+});
+function chuvaArca(){
+  $("#par").innerHTML="";
+  $("#arca").classList.add("fechada");
+  $("#dica-arca").innerHTML='Fale junto: <b>"CHUVA! PLIC, PLIC, PLIC!"</b> Bata os dedinhos na mesa como chuva.';
+  depois(700,()=>{ $("#chuva").classList.add("on"); $("#agua-arca").classList.add("sobe"); $("#arca").classList.add("flutua"); falar("arca_chuva"); });
+  depois(5200,()=>{
+    $("#chuva").classList.remove("on"); $("#agua-arca").classList.remove("sobe"); $("#arca").classList.remove("flutua","fechada");
+    $("#arco").classList.add("on"); SFX.festa();
+    $("#dica-arca").innerHTML='Aponte as cores do arco-íris: <b>"VERMELHO, AMARELO, VERDE, AZUL!"</b> Deus cuida de nós.';
+    const a=$("#arco").getBoundingClientRect(); confete(a.left+a.width/2, a.top+a.height/2);
+    falar("arca_arco"); depois(2500,()=>$("#denovo-arca").classList.add("on"));
+  });
+}
+$("#denovo-arca").addEventListener("click",()=>{ SFX.pop(); iniciarArca(); });
+
+/* ================= Bíblia: Ovelhinha perdida ================= */
+const LUGARES=["arvore","pedra","moita"]; let lugarCerto=-1, travaOv=false, achadas=0;
+function iniciarOvelha(zerar){
+  if(zerar){ achadas=0; $("#rebanho").textContent=""; }
+  travaOv=false;
+  let novo; do{ novo=Math.floor(Math.random()*3); }while(novo===lugarCerto); lugarCerto=novo;
+  const E=$("#esconderijos"); E.innerHTML="";
+  embaralhar(LUGARES.slice()).forEach((em,i)=>{
+    const b=document.createElement("button"); b.className="lugar";
+    b.innerHTML=`<div class="ov">${D.ovelhaCorpo()}</div><div class="obj">${D[em]()}</div>`;
+    b.onclick=()=>procurar(b,i); E.appendChild(b);
+  });
+  setTimeout(()=>falar("ovelha_inicio"),300);
+}
+function procurar(b,i){
+  if(travaOv) return;
+  if(i!==lugarCerto){ SFX.boing(); anima(b,"mexe",950); falar("ovelha_nao"); return; }
+  travaOv=true; b.classList.add("achou"); SFX.festa();
+  const r=b.getBoundingClientRect(); confete(r.left+r.width/2, r.top);
+  falar("ovelha_achou").then(()=>{
+    achadas++; $("#rebanho").innerHTML=Array.from({length:Math.min(achadas,8)},()=>`<span class="mini-ov">${D.ovelhaCorpo()}</span>`).join("");
+    setTimeout(()=>iniciarOvelha(false), cfg.modo==="junto"?2000:1100);
+  });
+}
+
+/* ================= Bíblia: Deus criou ================= */
+const PASSOS_CRIA=[
+  {id:"luz", txt:"Deus fez a luz!", fn:c=>{ $("#s-criacao").classList.add("luz"); }},
+  {id:"sol", txt:"Deus fez o sol!", fn:c=>item(c,D.sol(),"6%","8%","min(24vmin,200px)")},
+  {id:"lua", txt:"Deus fez a lua!", fn:c=>item(c,D.lua(),"80%","10%","min(16vmin,140px)")},
+  {id:"estrelas", txt:"Deus fez as estrelas!", fn:c=>{ [["32%","10%"],["46%","26%"],["62%","8%"],["70%","30%"],["90%","40%"]].forEach((p,i)=>item(c,D.estrela(),p[0],p[1],"min(8vmin,70px)",i*120)); }},
+  {id:"peixes", txt:"Deus fez os peixes!", fn:c=>{ const m=document.createElement("div"); m.className="mar-cria"; c.appendChild(m);
+      ["#FF8A00","#FF4F9A","#F5D000"].forEach((e,i)=>{ const f=document.createElement("div"); f.className="peixe"; f.innerHTML=D.peixe(e); f.style.left=(30+i*14)+"%"; f.style.bottom=(4+i*8)+"%"; f.style.animationDelay=(-i*2.2)+"s"; c.appendChild(f); }); }},
+  {id:"passaros", txt:"Deus fez os passarinhos!", fn:c=>{ ["#2A9DF4","#FF4F9A","#FFD84A"].forEach((e,i)=>{ const f=document.createElement("div"); f.className="passaro"; f.innerHTML=D.passaro(e); f.style.left="0"; f.style.top=(36+i*8)+"%"; f.style.animationDelay=(-i*2)+"s"; c.appendChild(f); }); }},
+  {id:"voce", txt:"Deus te ama!", fn:c=>{ item(c,D.coracao(),"50%","34%","min(32vmin,280px)",0,true); }}
+];
+let passoCria=0, travaCria=false;
+function item(c,em,x,y,tam,atraso=0,centro=false){
+  const d=document.createElement("div"); d.className="item"; d.innerHTML=em; d.style.left=x; d.style.top=y; d.style.width=tam; d.style.height=tam; d.style.animationDelay=atraso+"ms";
+  if(centro) d.style.marginLeft="calc(" + tam + " / -2)";
+  c.appendChild(d);
+}
+function iniciarCriacao(){
+  passoCria=0; travaCria=false;
+  $("#s-criacao").classList.remove("luz"); $("#denovo-cria").classList.remove("on");
+  const c=$("#cena-cria"); c.innerHTML='<div class="maozinha anel" style="left:50%;top:50%"></div>';
+  $("#titulo-cria").textContent="";
+  $("#dica-cria").innerHTML='Fale baixinho: <b>"Tudo escuro..."</b> Deixe ele tocar na tela para Deus fazer a luz.';
+  falar("cria_inicio");
+}
+$("#cena-cria").addEventListener("click",()=>{
+  if(travaCria || passoCria>=PASSOS_CRIA.length) return; travaCria=true;
+  const c=$("#cena-cria"), m=c.querySelector(".maozinha"); if(m) m.remove();
+  const p=PASSOS_CRIA[passoCria++]; p.fn(c); SFX.festa();
+  const t=$("#titulo-cria"); t.textContent=p.txt; anima(t,"pula",700);
+  t.style.color = p.id==="luz"||p.id==="sol"||p.id==="estrelas" ? "#F5A800" : p.id==="voce" ? "#FF4F9A" : "#2A8BE0";
+  $("#dica-cria").innerHTML=`Aponte e fale: <b>"${p.txt.toUpperCase()}"</b>`+(p.id==="voce"?" Abrace ele agora.":" Depois deixe ele tocar de novo.");
+  falar("cria_"+p.id).then(()=>{ travaCria=false; if(passoCria>=PASSOS_CRIA.length){ confete(innerWidth/2, innerHeight/2); $("#denovo-cria").classList.add("on"); } });
+});
+$("#denovo-cria").addEventListener("click",e=>{ e.stopPropagation(); SFX.pop(); iniciarCriacao(); });
+
+/* ================= Bíblia: Jonas ================= */
+let passoJonas=0, travaJonas=false;
+function iniciarJonas(){
+  passoJonas=0; travaJonas=false;
+  const j=$("#jonas"); $("#jonas-img").src="img/jonas-barco.webp"; j.style.transition="none"; j.style.transform=""; j.style.opacity="1"; void j.offsetWidth; j.style.transition="";
+  $("#peixao").classList.remove("aberta","nada"); $("#denovo-jonas").classList.remove("on");
+  $("#titulo-jonas").textContent="";
+  $("#dica-jonas").innerHTML='Aponte: <b>"Olha o PEIXÃO!"</b> Toque no peixão para ele abrir a boca.';
+  setTimeout(()=>falar("jonas_inicio"),300);
+}
+function tituloJonas(t){ const e=$("#titulo-jonas"); e.textContent=t; anima(e,"pula",700); }
+function moverJonasPara(alvo){
+  const j=$("#jonas"), r=j.getBoundingClientRect();
+  return `translate(${alvo.x-(r.left+r.width/2)}px,${alvo.y-(r.top+r.height/2)}px)`;
+}
+$("#cena-jonas").addEventListener("click",e=>{
+  if(e.target.closest(".denovo")) return;
+  if(travaJonas) return; travaJonas=true;
+  const pe=$("#peixao"), j=$("#jonas");
+  const fim=()=>{ travaJonas=false; };
+  if(passoJonas===0){ // abre a boca
+    pe.classList.add("aberta"); SFX.pop(); tituloJonas("Abre!");
+    $("#dica-jonas").innerHTML='Abra bem a boca e fale: <b>"ABRE!"</b> Espere ele imitar.';
+    falar("jonas_abre").then(fim); passoJonas=1;
+  } else if(passoJonas===1){ // Jonas entra e fecha
+    const b=$("#boca-peixe").getBoundingClientRect();
+    j.style.transform=moverJonasPara({x:b.left+b.width/2,y:b.top+b.height/2})+" scale(.3)"; j.style.opacity="0";
+    setTimeout(()=>{ pe.classList.remove("aberta"); SFX.nhac(); tituloJonas("Fecha!");
+      $("#dica-jonas").innerHTML='Feche a boca e fale: <b>"FECHA!"</b> O Jonas está dentro do peixão.';
+      falar("jonas_fecha").then(()=>{ pe.classList.add("nada"); setTimeout(()=>{ pe.classList.remove("nada"); fim(); },2600); });
+    },900);
+    passoJonas=2;
+  } else if(passoJonas===2){ // abre e devolve na praia
+    pe.classList.add("aberta"); SFX.pop(); tituloJonas("Abre!");
+    falar("jonas_abre").then(()=>{
+      const pr=$(".praia").getBoundingClientRect();
+      j.style.transition="none"; const b=$("#boca-peixe").getBoundingClientRect(); j.style.transform=moverJonasPara({x:b.left+b.width/2,y:b.top+b.height/2})+" scale(.3)"; void j.offsetWidth;
+      $("#jonas-img").src="img/jonas.webp"; j.style.transition=""; j.style.opacity="1"; j.style.transform=moverJonasPara({x:pr.left+pr.width*.5,y:pr.top+pr.height*.05});
+      setTimeout(()=>{ pe.classList.remove("aberta"); SFX.festa(); confete(pr.left+pr.width/2, pr.top);
+        tituloJonas("Deus cuida de nós!");
+        $("#dica-jonas").innerHTML='Fale: <b>"O peixão devolveu o Jonas!"</b> Deus cuida de nós.';
+        falar("jonas_fim").then(()=>{ $("#denovo-jonas").classList.add("on"); fim(); });
+      },1000);
+    });
+    passoJonas=3;
+  } else { fim(); }
+});
+$("#denovo-jonas").addEventListener("click",e=>{ e.stopPropagation(); SFX.pop(); iniciarJonas(); });
+
+/* ================= Animações ================= */
+function anima(el,cls,ms){ el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); setTimeout(()=>el.classList.remove(cls),ms); }
+
+/* ================= Confete ================= */
+function confete(x,y){
+  const cs=["#FFD84A","#FF4F9A","#4FD80F","#2A9DF4","#9C5CFF"];
+  for(let i=0;i<10;i++){
+    const s=document.createElement("span"); s.className="conf"; s.innerHTML=D0.estrela(cs[i%cs.length]);
+    const a=Math.random()*Math.PI*2, d=60+Math.random()*120;
+    s.style.left=x+"px"; s.style.top=y+"px";
+    s.style.setProperty("--dx",Math.cos(a)*d+"px"); s.style.setProperty("--dy",Math.sin(a)*d-40+"px");
+    document.body.appendChild(s); setTimeout(()=>s.remove(),1100);
+  }
+}
+
+/* ================= Cronômetro do ratinho ================= */
+$("#rato").innerHTML=ratoSVG();
+let ultimo=performance.now(), salvoEm=0;
+function desenharQueijo(){
+  if(!sess) return;
+  const trilho=$("#trilho").getBoundingClientRect().width, p=Math.max(0,sess.resta/sess.total);
+  const w=trilho*p; $("#queijo").style.width=w+"px"; $("#rato").style.left=w+"px";
+}
+function migalha(){
+  const t=$("#trilho"), q=$("#queijo").getBoundingClientRect(), tr=t.getBoundingClientRect();
+  const m=document.createElement("div"); m.className="migalha";
+  m.style.left=(q.width-4)+"px"; m.style.top=(tr.height*.45)+"px"; t.appendChild(m); setTimeout(()=>m.remove(),950);
+}
+let contMig=0;
+function tique(){
+  const agora=performance.now(), dt=agora-ultimo; ultimo=agora;
+  const rodando = sess && TELAS_CRIANCA.includes(telaAtual) && document.visibilityState==="visible";
+  $("#rato").classList.toggle("parado", !rodando);
+  if(rodando){
+    sess.resta -= Math.min(dt,1000);
+    if(++contMig%6===0) migalha();
+    if(agora-salvoEm>2000){ LS.set("sess",sess); salvoEm=agora; }
+    desenharQueijo();
+    if(sess.resta<=0){ sess=null; LS.set("sess",null); LS.set("travado",true); ir("fim"); }
+  }
+}
+setInterval(tique,250);
+window.addEventListener("resize",desenharQueijo);
+
+/* Engrenagem: segurar 3 s volta para o adulto */
+segurar($("#bt-eng"),3000,()=>{ LS.set("sess",sess); ir("adulto"); },true);
+
+/* ================= Fim ================= */
+function entrarFim(){
+  $("#fim-m").innerHTML=monstroSVG("dorme respira")+`<span class="zz" style="left:70%;top:0">z</span><span class="zz" style="left:80%;top:-4vmin;animation-delay:1s">Z</span>`;
+  $("#fim-rato").innerHTML=ratoSVG(true);
+  const sc=$("#s-fim");
+  sc.querySelectorAll(".estrela").forEach(e=>e.remove());
+  for(let i=0;i<14;i++){ const e=document.createElement("span"); e.className="estrela"; e.textContent="✦";
+    e.style.left=Math.random()*100+"%"; e.style.top=Math.random()*45+"%"; e.style.fontSize=(10+Math.random()*18)+"px"; e.style.animationDelay=(Math.random()*2)+"s"; sc.appendChild(e); }
+  SFX.noite(); setTimeout(()=>falar("tchau"),700);
+}
+segurar($("#bt-destravar"),3000,()=>{ LS.set("travado",false); ir("adulto"); });
+
+/* Bloquear zoom de pinça no iPad */
+document.addEventListener("gesturestart",e=>e.preventDefault());
+document.addEventListener("dblclick",e=>e.preventDefault());
+
+/* ================= Início ================= */
+(async function(){
+  aplicarModo();
+  try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
+  await carregarVoz();
+  if(LS.get("travado",false)) ir("fim");
+  else if(sess && sess.resta>0) ir("menu");
+  else ir("adulto");
+  desenharQueijo();
+  document.addEventListener("pointerdown",()=>prepararBuffers(),{once:true});
+  if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+})();
+</script>
+</body>
+</html>
